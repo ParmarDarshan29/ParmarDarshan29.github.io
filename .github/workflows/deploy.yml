@@ -5,6 +5,12 @@ on:
     branches:
       - main
 
+# Ensure the GITHUB_TOKEN has explicit write permissions for pushing the built site
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
@@ -12,6 +18,11 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          # fetch full history so tags/branches can be created reliably
+          fetch-depth: 0
+          # ensure the checkout step leaves credentials so actions-gh-pages can push
+          persist-credentials: true
 
       - name: Use Node.js
         uses: actions/setup-node@v4
