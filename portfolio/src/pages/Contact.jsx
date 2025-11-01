@@ -27,9 +27,9 @@ export default function Contact() {
           <label className="label" style={{ marginTop: 12 }}>Message</label>
           <textarea className="input" name="message" value={formData.message} onChange={handleChange} required style={{ minHeight: 160 }} />
 
-          <div style={{ marginTop: 14, display: 'flex', gap: 12 }}>
+          <div className="contact-actions" style={{ marginTop: 14 }}>
             <button className="btn primary" type="submit">Send Message</button>
-            <a className="link" href="mailto:connect.darshanparmar@gmail.com">Email me</a>
+            <a className="btn outline" href="mailto:connect.darshanparmar@gmail.com">Email me</a>
           </div>
         </form>
 

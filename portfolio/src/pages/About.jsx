@@ -1,6 +1,17 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 export default function About() {
+  const [adminNote, setAdminNote] = useState('');
+
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem('portfolio_about_v1');
+      if (raw) setAdminNote(JSON.parse(raw));
+    } catch (e) {
+      // ignore
+    }
+  }, []);
+
   return (
     <section id="about" className="container page">
       <h2 className="page-title" style={{ color: 'var(--accent)' }}>About Me</h2>
@@ -23,20 +34,18 @@ export default function About() {
             <a className="btn" href="/contact">Contact</a>
           </div>
 
-          <div style={{ width: '100%', marginTop: 8 }}>
-            <h4 style={{ margin: '8px 0', color: 'var(--accent)' }}>Skills</h4>
-            <div className="skill-list" style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-              <span className="tag">React</span>
-              <span className="tag">JavaScript</span>
-              <span className="tag">HTML</span>
-              <span className="tag">CSS</span>
-              <span className="tag">Accessibility</span>
-              <span className="tag">Performance</span>
-            </div>
-          </div>
+          {/* Skills removed from About sidebar as requested */}
         </aside>
 
         <div className="card" style={{ padding: 20 }}>
+          <div className="admin-note" style={{ marginBottom: 12 }}>
+            <strong>Note (admin):</strong>
+            {adminNote ? (
+              <p style={{ margin: '6px 0 0' }}>{adminNote}</p>
+            ) : (
+              <p style={{ margin: '6px 0 0' }} className="muted">This is admin — I can change this according to my updates. Edit this block to quickly update public information.</p>
+            )}
+          </div>
           <p style={{ color: 'var(--text)', marginBottom: 12 }}>
             Hi — I'm Darshan Parmar, a front-end developer focused on building simple, robust and accessible web applications.
             I care about readable code, good typography and performant delivery.

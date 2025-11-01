@@ -12,7 +12,6 @@ export default function Header() {
         <nav className="nav" role="navigation" aria-label="Main navigation">
           <NavLink to="/" className={active} end>Home</NavLink>
           <NavLink to="/about" className={active}>About</NavLink>
-          <NavLink to="/education" className={active}>Education</NavLink>
           <NavLink to="/skills" className={active}>Skills</NavLink>
           <NavLink to="/research" className={active}>Research</NavLink>
           <NavLink to="/internships" className={active}>Internships</NavLink>

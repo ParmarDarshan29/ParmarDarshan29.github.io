@@ -72,6 +72,8 @@ export default function Admin() {
     const key = KEYS[section];
     let payload;
 
+    // normal flow for projects/skills/internships/research
+
     if (section === 'skills') {
       // skills stored as array of strings
       const newSkills = (form.skills || '')
@@ -171,7 +173,7 @@ export default function Admin() {
     <section className="container page">
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 12 }}>
         <h2 className="page-title">Admin — Manage content</h2>
-        <div style={{ display: 'flex', gap: 8 }}>
+        <div className="admin-actions" style={{ display: 'flex', gap: 8 }}>
           <button className="btn" onClick={() => setSectionAndLoad('projects')}>Projects</button>
           <button className="btn" onClick={() => setSectionAndLoad('skills')}>Skills</button>
           <button className="btn" onClick={() => setSectionAndLoad('internships')}>Internships</button>
@@ -247,8 +249,16 @@ export default function Admin() {
             </>
           )}
 
+          {section === 'about' && (
+            <>
+              <label className="label">About admin note (public)</label>
+              <textarea className="input" name="aboutText" value={form.aboutText || ''} onChange={handleChange} style={{ minHeight: 120 }} />
+              <div className="muted" style={{ marginTop: 8 }}>This text is displayed in the public About page as the admin note.</div>
+            </>
+          )}
+
           <div style={{ marginTop: 12 }}>
-            <button className="btn primary" type="submit">{(section === 'skills') ? 'Add / Merge skills' : (form.id ? 'Save changes' : 'Add')}</button>
+            <button className="btn primary" type="submit">{section === 'skills' ? 'Add / Merge skills' : section === 'about' ? 'Save about note' : (form.id ? 'Save changes' : 'Add')}</button>
           </div>
         </form>
 
