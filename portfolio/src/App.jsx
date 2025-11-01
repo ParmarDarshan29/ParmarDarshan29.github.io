@@ -10,6 +10,7 @@ import Internships from './pages/Internships';
 import Projects from './pages/Projects';
 import Contact from './pages/Contact';
 import Admin from './pages/Admin';
+import Activities from './pages/Activities';
 import './index.css';
 
 export default function App() {
@@ -32,6 +33,7 @@ function MainWithFooter() {
           <Route path="/skills" element={<Skills />} />
           <Route path="/research" element={<Research />} />
           <Route path="/internships" element={<Internships />} />
+          <Route path="/activities" element={<Activities />} />
           <Route path="/projects" element={<Projects />} />
           <Route path="/contact" element={<Contact />} />
           {/* admin route is intentionally unlinked in the header */}

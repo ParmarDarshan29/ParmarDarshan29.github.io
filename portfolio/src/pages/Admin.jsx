@@ -5,6 +5,7 @@ const KEYS = {
   projects: 'portfolio_projects_v1',
   skills: 'portfolio_skills_v1',
   internships: 'portfolio_internships_v1',
+  activities: 'portfolio_activities_v1',
   research: 'portfolio_research_v1',
 };
 const AUTH_KEY = 'portfolio_admin_auth_v1';
@@ -119,6 +120,17 @@ export default function Admin() {
         desc: form.desc || '',
         image: form.image || '',
       };
+    } else if (section === 'activities') {
+      // images: comma separated URLs
+      const imgs = (form.images || '').split(',').map(s => s.trim()).filter(Boolean);
+      payload = {
+        id: form.id || Date.now().toString(36),
+        title: form.title || '',
+        date: form.date || '',
+        location: form.location || '',
+        desc: form.desc || '',
+        images: imgs,
+      };
     } else if (section === 'research') {
       payload = {
         id: form.id || Date.now().toString(36),
@@ -138,6 +150,13 @@ export default function Admin() {
   const edit = (it) => {
     if (section === 'skills') {
       setForm({ skills: (it || []).join(', ') });
+      return;
+    }
+    if (section === 'activities') {
+      setForm({
+        ...it,
+        images: (it.images || []).join(', '),
+      });
       return;
     }
     setForm({
@@ -189,6 +208,7 @@ export default function Admin() {
           <button className="btn" onClick={() => setSectionAndLoad('projects')}>Projects</button>
           <button className="btn" onClick={() => setSectionAndLoad('skills')}>Skills</button>
           <button className="btn" onClick={() => setSectionAndLoad('internships')}>Internships</button>
+          <button className="btn" onClick={() => setSectionAndLoad('activities')}>Activities</button>
           <button className="btn" onClick={() => setSectionAndLoad('research')}>Research</button>
           <button className="btn" onClick={logout}>Sign out</button>
         </div>
@@ -200,6 +220,7 @@ export default function Admin() {
           <h3 style={{ marginTop: 0 }}>{section === 'projects' ? (form.id ? 'Edit project' : 'Add project')
             : section === 'skills' ? 'Add / Edit skills'
             : section === 'internships' ? (form.id ? 'Edit internship' : 'Add internship')
+            : section === 'activities' ? (form.id ? 'Edit activity' : 'Add activity')
             : (form.id ? 'Edit research' : 'Add research')}</h3>
 
           {section === 'projects' && (
@@ -248,6 +269,25 @@ export default function Admin() {
             </>
           )}
 
+          {section === 'activities' && (
+            <>
+              <label className="label">Title</label>
+              <input className="input" name="title" value={form.title || ''} onChange={handleChange} required />
+
+              <label className="label" style={{ marginTop: 8 }}>Date</label>
+              <input className="input" name="date" value={form.date || ''} onChange={handleChange} placeholder="e.g. 2024-08-15 or Aug 2024" />
+
+              <label className="label" style={{ marginTop: 8 }}>Location (optional)</label>
+              <input className="input" name="location" value={form.location || ''} onChange={handleChange} />
+
+              <label className="label" style={{ marginTop: 8 }}>Image URLs (comma separated)</label>
+              <input className="input" name="images" value={form.images || ''} onChange={handleChange} placeholder="https://.../img1.jpg, https://.../img2.jpg" />
+
+              <label className="label" style={{ marginTop: 8 }}>Notes / Description</label>
+              <textarea className="input" name="desc" value={form.desc || ''} onChange={handleChange} style={{ minHeight: 80 }} />
+            </>
+          )}
+
           {section === 'research' && (
             <>
               <label className="label">Title</label>
@@ -279,7 +319,7 @@ export default function Admin() {
 
         {/* List */}
         <div className="card">
-          <h3 style={{ marginTop: 0, marginBottom: 8 }}>{section === 'projects' ? 'Projects' : section === 'skills' ? 'Skills' : section === 'internships' ? 'Internships' : 'Research'}</h3>
+          <h3 style={{ marginTop: 0, marginBottom: 8 }}>{section === 'projects' ? 'Projects' : section === 'skills' ? 'Skills' : section === 'internships' ? 'Internships' : section === 'activities' ? 'Activities' : 'Research'}</h3>
           <div style={{ display: 'grid', gap: 10 }}>
             {items.length === 0 && <div className="muted">No entries yet.</div>}
 
@@ -328,6 +368,31 @@ export default function Admin() {
                 <div style={{ display: 'flex', gap: 8 }}>
                   <button className="btn" onClick={() => edit(it)}>Edit</button>
                   <button className="btn" onClick={() => remove(it.id)}>Delete</button>
+                </div>
+              </div>
+            ))}
+
+            {section === 'activities' && items.map(a => (
+              <div key={a.id} style={{ display: 'flex', justifyContent: 'space-between', gap: 12, alignItems: 'center' }}>
+                <div style={{ display: 'flex', gap: 12, alignItems: 'flex-start' }}>
+                  {a.images && a.images.length > 0 ? (
+                    <a href={a.images[0]} target="_blank" rel="noreferrer"><img src={a.images[0]} alt={a.title} style={{ width: 84, height: 66, objectFit: 'cover', borderRadius: 8, border: '1px solid rgba(255,255,255,0.04)' }} /></a>
+                  ) : null}
+                  <div>
+                    <strong>{a.title}</strong> <span className="muted">— {a.date} {a.location ? `· ${a.location}` : ''}</span>
+                    <div style={{ marginTop: 6 }}>{a.desc}</div>
+                    {a.images && a.images.length > 1 ? (
+                      <div style={{ display: 'flex', gap: 6, marginTop: 8 }}>
+                        {a.images.slice(0,4).map((img, idx) => (
+                          <a key={idx} href={img} target="_blank" rel="noreferrer"><img src={img} alt={`${a.title} ${idx+1}`} style={{ width: 48, height: 36, objectFit: 'cover', borderRadius: 6, border: '1px solid rgba(255,255,255,0.04)' }} /></a>
+                        ))}
+                      </div>
+                    ) : null}
+                  </div>
+                </div>
+                <div style={{ display: 'flex', gap: 8 }}>
+                  <button className="btn" onClick={() => edit(a)}>Edit</button>
+                  <button className="btn" onClick={() => remove(a.id)}>Delete</button>
                 </div>
               </div>
             ))}
