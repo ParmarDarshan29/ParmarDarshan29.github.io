@@ -75,19 +75,30 @@ export default function Admin() {
     // normal flow for projects/skills/internships/research
 
     if (section === 'skills') {
-      // skills stored as array of strings
-      const newSkills = (form.skills || '')
-        .split(',')
-        .map(s => s.trim())
-        .filter(Boolean);
-      // merge unique (keep existing + new)
-      const merged = Array.from(new Set([...(items || []), ...newSkills]));
-      save(key, merged);
-      // reload from storage to ensure consistent format
-      const reloaded = load(key);
-      setItems(reloaded);
-      setForm({});
-      return;
+        // Accept skills as lines. Each line can be "name|imageUrl" or just "name"
+        const lines = (form.skills || '').split('\n').map(l => l.trim()).filter(Boolean);
+        const parsed = lines.map(l => {
+          // support both '|' and ',' separators for image
+          const sep = l.includes('|') ? '|' : (l.includes(',') ? ',' : null);
+          if (!sep) return { name: l };
+          const [name, image] = l.split(sep).map(p => p.trim());
+          return { name, image: image || '' };
+        });
+
+        // existing items might be strings or objects; normalize to objects
+        const existing = (items || []).map(i => (typeof i === 'string' ? { name: i } : i));
+
+        // merge by name (case-insensitive)
+        const map = new Map();
+        existing.forEach(it => { map.set((it.name || '').toLowerCase(), it); });
+        parsed.forEach(it => { map.set((it.name || '').toLowerCase(), { ...map.get((it.name || '').toLowerCase()), ...it }); });
+
+        const merged = Array.from(map.values());
+        save(key, merged);
+        const reloaded = load(key);
+        setItems(reloaded);
+        setForm({});
+        return;
     }
 
     if (section === 'projects') {
@@ -106,6 +117,7 @@ export default function Admin() {
         role: form.role || '',
         period: form.period || '',
         desc: form.desc || '',
+        image: form.image || '',
       };
     } else if (section === 'research') {
       payload = {
@@ -151,17 +163,17 @@ export default function Admin() {
 
   if (!authenticated) {
     return (
-      <section className="container page">
+      <section className="container page" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
         <h2 className="page-title">Admin — Sign in</h2>
-        <p className="lead">This area is for Darshan Parmar only — you can explore other parts of the site freely.</p>
-        <p className="muted" style={{ marginBottom: 12 }}>
-          Enter the admin password to manage Projects, Skills, Internships and Research.
+        <p className="lead" style={{ textAlign: 'center' }}>This section is for admin use only. Please sign in to manage site content.</p>
+        <p className="muted" style={{ marginBottom: 12, textAlign: 'center' }}>
+          Enter the admin password to manage Projects, Skills, Internships and Research. Do not share this password.
         </p>
 
-        <form onSubmit={login} className="card" style={{ maxWidth: 560 }}>
-          <label className="label">Password</label>
-          <input className="input" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
-          <div style={{ marginTop: 12 }}>
+        <form onSubmit={login} className="card" style={{ maxWidth: 420, width: '100%', display: 'flex', flexDirection: 'column', gap: 8 }}>
+          <label className="label" style={{ textAlign: 'left' }}>Password</label>
+          <input className="input" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required style={{ maxWidth: '100%' }} />
+          <div style={{ marginTop: 12, display: 'flex', justifyContent: 'center' }}>
             <button className="btn primary" type="submit">Sign in</button>
           </div>
         </form>
@@ -211,9 +223,9 @@ export default function Admin() {
 
           {section === 'skills' && (
             <>
-              <label className="label">Skills (comma separated)</label>
-              <input className="input" name="skills" value={form.skills || ''} onChange={handleChange} placeholder="React, JavaScript, CSS" required />
-              <div className="muted" style={{ marginTop: 8 }}>Adding duplicates is prevented; use commas to add multiple skills.</div>
+              <label className="label">Skills (one per line). Optional image: separate using a pipe — e.g. React|https://.../react.png</label>
+              <textarea className="input" name="skills" value={form.skills || ''} onChange={handleChange} placeholder={"React|https://...\nJavaScript|https://...\nCSS"} required style={{ minHeight: 120 }} />
+              <div className="muted" style={{ marginTop: 8 }}>Enter one skill per line. Use 'name|imageUrl' to attach an image to a skill. Editing fills this textarea with the selected entry.</div>
             </>
           )}
 
@@ -227,6 +239,9 @@ export default function Admin() {
 
               <label className="label" style={{ marginTop: 8 }}>Period</label>
               <input className="input" name="period" value={form.period || ''} onChange={handleChange} />
+
+              <label className="label" style={{ marginTop: 8 }}>Certificate Image URL (optional)</label>
+              <input className="input" name="image" value={form.image || ''} onChange={handleChange} placeholder="https://.../certificate.jpg" />
 
               <label className="label" style={{ marginTop: 8 }}>Notes / Description</label>
               <textarea className="input" name="desc" value={form.desc || ''} onChange={handleChange} style={{ minHeight: 80 }} />
@@ -268,15 +283,21 @@ export default function Admin() {
           <div style={{ display: 'grid', gap: 10 }}>
             {items.length === 0 && <div className="muted">No entries yet.</div>}
 
-            {section === 'skills' && items.map(s => (
-              <div key={s} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <div>{s}</div>
-                <div style={{ display: 'flex', gap: 8 }}>
-                  <button className="btn" onClick={() => { setForm({ skills: s }); }}>Edit</button>
-                  <button className="btn" onClick={() => remove(s)}>Delete</button>
+            {section === 'skills' && items.map((s) => {
+              const key = (typeof s === 'string') ? s : s.name;
+              return (
+                <div key={key} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+                    { (s && s.image) ? <img src={s.image} alt={s.name || s} style={{ width: 36, height: 36, objectFit: 'cover', borderRadius: 6, border: '1px solid rgba(255,255,255,0.04)' }} /> : null }
+                    <div>{typeof s === 'string' ? s : s.name}</div>
+                  </div>
+                  <div style={{ display: 'flex', gap: 8 }}>
+                    <button className="btn" onClick={() => { setForm({ skills: (typeof s === 'string') ? s : `${s.name}|${s.image || ''}` }); }}>Edit</button>
+                    <button className="btn" onClick={() => remove(typeof s === 'string' ? s : s.name)}>Delete</button>
+                  </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
 
             {section === 'projects' && items.map(p => (
               <div key={p.id} style={{ display: 'flex', justifyContent: 'space-between', gap: 12, alignItems: 'center' }}>
@@ -294,10 +315,15 @@ export default function Admin() {
 
             {section === 'internships' && items.map(it => (
               <div key={it.id} style={{ display: 'flex', justifyContent: 'space-between', gap: 12, alignItems: 'center' }}>
-                <div>
-                  <strong>{it.company}</strong> <span className="muted">— {it.role}</span>
-                  <div className="muted">{it.period}</div>
-                  <div style={{ marginTop: 6 }}>{it.desc}</div>
+                <div style={{ display: 'flex', gap: 12, alignItems: 'flex-start' }}>
+                  {it.image ? (
+                    <a href={it.image} target="_blank" rel="noreferrer"><img src={it.image} alt={`${it.company} certificate`} style={{ width: 84, height: 66, objectFit: 'cover', borderRadius: 8, border: '1px solid rgba(255,255,255,0.04)' }} /></a>
+                  ) : null}
+                  <div>
+                    <strong>{it.company}</strong> <span className="muted">— {it.role}</span>
+                    <div className="muted">{it.period}</div>
+                    <div style={{ marginTop: 6 }}>{it.desc}</div>
+                  </div>
                 </div>
                 <div style={{ display: 'flex', gap: 8 }}>
                   <button className="btn" onClick={() => edit(it)}>Edit</button>

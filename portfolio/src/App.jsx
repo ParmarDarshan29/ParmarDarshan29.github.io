@@ -1,6 +1,7 @@
 import React from 'react';
-import { HashRouter as Router, Routes, Route } from 'react-router-dom';
+import { HashRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import Header from './components/Header';
+import Footer from './components/Footer';
 import Home from './pages/Home';
 import About from './pages/About';
 import Skills from './pages/Skills';
@@ -15,6 +16,15 @@ export default function App() {
   return (
     <Router>
       <Header />
+      <MainWithFooter />
+    </Router>
+  );
+}
+
+function MainWithFooter() {
+  const location = useLocation();
+  return (
+    <>
       <main>
         <Routes>
           <Route path="/" element={<Home />} />
@@ -28,6 +38,8 @@ export default function App() {
           <Route path="/admin" element={<Admin />} />
         </Routes>
       </main>
-    </Router>
+      {/* render footer on all pages except Contact */}
+      {location.pathname !== '/contact' && <Footer />}
+    </>
   );
 }

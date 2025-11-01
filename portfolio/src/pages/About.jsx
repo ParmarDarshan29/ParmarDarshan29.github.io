@@ -1,67 +1,58 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
 export default function About() {
-  const [adminNote, setAdminNote] = useState('');
-
-  useEffect(() => {
-    try {
-      const raw = localStorage.getItem('portfolio_about_v1');
-      if (raw) setAdminNote(JSON.parse(raw));
-    } catch (e) {
-      // ignore
-    }
-  }, []);
-
   return (
     <section id="about" className="container page">
       <h2 className="page-title" style={{ color: 'var(--accent)' }}>About Me</h2>
-      <p className="lead">I build clean, accessible and performance-focused front-end experiences.</p>
 
-      {/* Two-column responsive layout: avatar/quick actions left, main content right */}
       <div style={{ display: 'grid', gridTemplateColumns: '320px 1fr', gap: 20, marginTop: 16, alignItems: 'start' }}>
-        <aside className="card" style={{ padding: 20, display: 'flex', flexDirection: 'column', gap: 16, alignItems: 'center' }}>
-          <div style={{ width: 140, height: 140, borderRadius: '50%', background: 'linear-gradient(135deg, #f97316, #fb923c)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontSize: 40, fontWeight: 700 }}>
-            DP
-          </div>
+        <aside className="card about-aside" style={{ padding: 20, display: 'flex', flexDirection: 'column', gap: 16, alignItems: 'center' }}>
+          <img src={`${process.env.PUBLIC_URL}/darshan.jpg`} alt="Darshan Parmar" className="profile-photo" style={{ width: 220, height: 220, borderRadius: 14, objectFit: 'cover' }} />
 
           <div style={{ textAlign: 'center' }}>
             <h3 style={{ margin: '8px 0 4px' }}>Darshan Parmar</h3>
-            <div style={{ color: 'var(--muted)', fontSize: 14 }}>Front-end Developer</div>
+            <div style={{ color: 'var(--muted)', fontSize: 14 }}>AI & ML Researcher · Front-end Developer</div>
           </div>
 
           <div style={{ display: 'flex', gap: 10, marginTop: 8 }}>
             <a className="btn primary" href="/resume.pdf" target="_blank" rel="noreferrer">Resume</a>
-            <a className="btn" href="/contact">Contact</a>
           </div>
-
-          {/* Skills removed from About sidebar as requested */}
         </aside>
 
         <div className="card" style={{ padding: 20 }}>
-          <div className="admin-note" style={{ marginBottom: 12 }}>
-            <strong>Note (admin):</strong>
-            {adminNote ? (
-              <p style={{ margin: '6px 0 0' }}>{adminNote}</p>
-            ) : (
-              <p style={{ margin: '6px 0 0' }} className="muted">This is admin — I can change this according to my updates. Edit this block to quickly update public information.</p>
-            )}
-          </div>
-          <p style={{ color: 'var(--text)', marginBottom: 12 }}>
-            Hi — I'm Darshan Parmar, a front-end developer focused on building simple, robust and accessible web applications.
-            I care about readable code, good typography and performant delivery.
+          <p className="lead">I build meaningful, interpretable, and performance-focused AI and web experiences.</p>
+
+          <p style={{ color: 'var(--text)' }}>
+            Hi  I'm Darshan Parmar, a Computer Engineering student and AI enthusiast from Government Engineering College, Bharuch, affiliated with Gujarat Technological University.
+            My work bridges Machine Learning, Deep Learning, and Explainable AI (XAI) to create transparent and equitable intelligent systems — particularly in healthcare.
           </p>
 
-          <ul style={{ marginTop: 8, color: 'var(--muted)' }}>
-            <li><strong>Focus:</strong> Interfaces, performance, accessibility</li>
-            <li><strong>Stack:</strong> React, Vite, JavaScript, CSS</li>
-            <li><strong>Location:</strong> Remote / Bharuch, Gujarat</li>
-          </ul>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: 12, marginTop: 12 }}>
+            <div>
+              <h5 style={{ marginTop: 0, color: 'var(--accent)' }}>Focus</h5>
+              <p className="muted">Explainable AI &amp; Model Interpretability<br/>EEG and Medical Image Analysis<br/>Web &amp; AI System Integration</p>
+            </div>
 
-          <div style={{ marginTop: 14 }}>
-            <h4 style={{ marginTop: 0, color: 'var(--accent)' }}>Short Bio</h4>
-            <p style={{ marginTop: 6, color: 'var(--text)' }}>
-              I enjoy turning complex problems into simple, beautiful and intuitive user experiences. When I'm not coding, I like reading about performance optimizations and exploring new front-end patterns.
-            </p>
+            <div>
+              <h5 style={{ marginTop: 0, color: 'var(--accent)' }}>Short Bio</h5>
+              <p style={{ color: 'var(--text)', lineHeight: 1.6 }}>
+                I love transforming complex research ideas into real-world, accessible solutions.
+                Currently, I’m researching interpretable PTSD diagnosis using EEG data and developing robust AI-driven healthcare tools that enhance clinical trust and decision-making.
+              </p>
+              <p style={{ marginTop: 8, color: 'var(--text)' }}>
+                Beyond AI, I’m interested in building sleek, performant web interfaces and exploring how design and data can work together to create better digital experiences.
+              </p>
+            </div>
+
+            <div>
+              <h5 style={{ marginTop: 0, color: 'var(--accent)' }}>Education</h5>
+              <p className="muted">B.E. in Computer Engineering<br/>Government Engineering College, Bharuch<br/>(Expected Graduation: 2026)</p>
+            </div>
+
+            <div>
+              <h5 style={{ marginTop: 0, color: 'var(--accent)' }}>Location</h5>
+              <p className="muted">Remote / Bharuch, Gujarat</p>
+            </div>
           </div>
         </div>
       </div>

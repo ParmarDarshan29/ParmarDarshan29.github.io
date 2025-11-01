@@ -1,12 +1,16 @@
 const Footer = () => {
+  const year = new Date().getFullYear();
   return (
-    <footer style={{ backgroundColor: '#555', color: '#fff', padding: '1rem', textAlign: 'center', marginTop: 'auto', transition: 'background-color 0.3s ease' }}>
-      <p>&copy; 2023 Darshan Parmar. All rights reserved.</p>
-      <p style={{ color: '#ddd' }}>Contact: <a href="mailto:connect.darshanparmar@gmail.com" style={{ color: '#ff6600', textDecoration: 'none', transition: 'color 0.3s ease' }} onMouseEnter={(e) => e.target.style.color = '#e55a00'} onMouseLeave={(e) => e.target.style.color = '#ff6600'}>connect.darshanparmar@gmail.com</a></p>
-      <p style={{ color: '#ddd' }}>
-        <a href="https://linkedin.com/in/dte-gecbh-com-darshan-parmar" style={{ color: '#ff6600', textDecoration: 'none', margin: '0 1rem', transition: 'color 0.3s ease' }} onMouseEnter={(e) => e.target.style.color = '#e55a00'} onMouseLeave={(e) => e.target.style.color = '#ff6600'}>LinkedIn</a> | 
-        <a href="https://github.com/ParmarDarshan29" style={{ color: '#ff6600', textDecoration: 'none', margin: '0 1rem', transition: 'color 0.3s ease' }} onMouseEnter={(e) => e.target.style.color = '#e55a00'} onMouseLeave={(e) => e.target.style.color = '#ff6600'}>GitHub</a>
-      </p>
+    <footer className="site-footer" style={{ backgroundColor: 'var(--panel)', color: 'var(--muted)' }}>
+      <div style={{ maxWidth: 1100, margin: '0 auto', padding: '1rem 1rem', textAlign: 'center' }}>
+        <p style={{ margin: 0, color: 'var(--muted)' }}>&copy; {year} Darshan Parmar. All rights reserved.</p>
+        <p style={{ margin: '6px 0 0', color: 'var(--muted)' }}>Email: <a href="mailto:connect.darshanparmar@gmail.com" style={{ color: 'var(--accent)', textDecoration: 'none' }}>connect.darshanparmar@gmail.com</a></p>
+        <p style={{ margin: '6px 0 0' }}>
+          <a href="https://linkedin.com/in/dte-gecbh-com-darshan-parmar" style={{ color: 'var(--accent)', textDecoration: 'none', margin: '0 0.5rem' }}>LinkedIn</a>
+          <span style={{ color: 'var(--muted)' }}>|</span>
+          <a href="https://github.com/ParmarDarshan29" style={{ color: 'var(--accent)', textDecoration: 'none', margin: '0 0.5rem' }}>GitHub</a>
+        </p>
+      </div>
     </footer>
   );
 };

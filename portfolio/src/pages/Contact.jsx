@@ -1,15 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 export default function Contact() {
-  const [formData, setFormData] = useState({ name: '', email: '', message: '' });
-
-  const handleChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    alert('Thanks — message sent (demo).');
-    setFormData({ name: '', email: '', message: '' });
-  };
+  const mailto = 'mailto:connect.darshanparmar@gmail.com';
 
   return (
     <section id="contact" className="container page">
@@ -17,26 +9,18 @@ export default function Contact() {
       <p className="lead">Available for projects — let’s build something great.</p>
 
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 360px', gap: 20, marginTop: 16 }}>
-        <form className="card" onSubmit={handleSubmit} style={{ padding: 20 }}>
-          <label className="label">Name</label>
-          <input className="input" name="name" value={formData.name} onChange={handleChange} required />
+        <div className="card" style={{ padding: 24, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+          <h3 style={{ marginTop: 0 }}>Get in touch</h3>
+          <p className="muted" style={{ textAlign: 'center' }}>Click the button below to open your default email client and compose a message.</p>
 
-          <label className="label" style={{ marginTop: 12 }}>Email</label>
-          <input className="input" type="email" name="email" value={formData.email} onChange={handleChange} required />
-
-          <label className="label" style={{ marginTop: 12 }}>Message</label>
-          <textarea className="input" name="message" value={formData.message} onChange={handleChange} required style={{ minHeight: 160 }} />
-
-          <div className="contact-actions" style={{ marginTop: 14 }}>
-            <button className="btn primary" type="submit">Send Message</button>
-            <a className="btn outline" href="mailto:connect.darshanparmar@gmail.com">Email me</a>
+          <div style={{ marginTop: 16, display: 'flex', gap: 12, alignItems: 'center' }}>
+            <a className="btn primary" href={mailto}>Email me</a>
           </div>
-        </form>
+        </div>
 
         <aside className="card" style={{ padding: 20 }}>
           <h3 style={{ marginTop: 0, color: 'var(--accent)' }}>Contact Information</h3>
-          <p className="muted">Email: <a className="link" href="mailto:connect.darshanparmar@gmail.com">connect.darshanparmar@gmail.com</a></p>
-          <p className="muted">Phone: +91 8141902382</p>
+          <p className="muted">Email: <a className="link" href={mailto}>connect.darshanparmar@gmail.com</a></p>
           <p className="muted">Location: Bharuch, Gujarat</p>
 
           <div style={{ marginTop: 12, display: 'flex', gap: 12 }}>
@@ -46,7 +30,6 @@ export default function Contact() {
         </aside>
       </div>
 
-      {/* responsive fallback */}
       <style>{`
         @media (max-width: 880px) {
           #contact .container > div { grid-template-columns: 1fr; }

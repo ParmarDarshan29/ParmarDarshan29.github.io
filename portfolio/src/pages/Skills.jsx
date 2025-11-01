@@ -43,12 +43,18 @@ export default function Skills() {
             <p className="muted">No skills added yet. Add skills via the <a className="link" href="/admin">admin</a> page.</p>
           </div>
         ) : (
-          <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
-            {skills.map((s) => (
-              <span key={s} className="tag" style={{ background: 'rgba(249,115,22,0.08)', color: 'var(--accent)' }}>
-                {s}
-              </span>
-            ))}
+          <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', alignItems: 'center' }}>
+            {skills.map((s) => {
+              const isStr = typeof s === 'string';
+              const name = isStr ? s : s.name;
+              const img = isStr ? null : s.image;
+              return (
+                <div key={name} style={{ display: 'inline-flex', alignItems: 'center', gap: 8 }}>
+                  {img ? <img src={img} alt={name} style={{ width: 28, height: 28, objectFit: 'cover', borderRadius: 6, border: '1px solid rgba(255,255,255,0.02)' }} /> : null}
+                  <span className="tag" style={{ background: 'rgba(249,115,22,0.08)', color: 'var(--accent)' }}>{name}</span>
+                </div>
+              );
+            })}
           </div>
         )}
       </div>

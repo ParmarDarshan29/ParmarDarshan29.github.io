@@ -78,6 +78,8 @@ body {
 /* page utilities */
 .page { min-height: 80vh; padding: 2rem; animation: fadeIn 0.9s ease; }
 .container { width: min(1100px, 92%); margin: 0 auto; }
+/* ensure main has bottom padding so fixed footer doesn't overlap content */
+main { padding-bottom: 92px; }
 
 /* typography */
 .page-title { color: var(--accent); font-size: 2.5rem; margin-bottom: 1rem; text-align:center; }
@@ -198,6 +200,22 @@ body {
   .row { flex-direction:column; }
 }
 
+/* profile photo styling */
+.profile-photo {
+  border: 3px solid rgba(255,255,255,0.06);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+  display: block;
+  /* rounded-rectangle frame */
+  border-radius: 14px;
+}
+
+/* About page aside: keep photo fixed while content scrolls on wide screens */
+.about-aside {
+  align-self: start; /* make the aside align to the top of the grid cell */
+  position: sticky;
+  top: 88px; /* leave room for sticky header */
+}
+
 /* Projects layout improvements */
 .projects {
   padding-top: 32px;
@@ -292,4 +310,22 @@ body {
     border-radius: 10px;
   }
   .meta { flex-direction: column; align-items: stretch; gap: 10px; }
+}
+
+/* Footer: fixed at bottom and make room for it in main */
+.site-footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  z-index: 60;
+  border-top: 1px solid rgba(255,255,255,0.02);
+  background: var(--panel);
+  /* smaller footprint */
+  padding: 8px 0;
+  font-size: 0.92rem;
+}
+
+@media (max-width: 640px) {
+  main { padding-bottom: 140px; }
 }

@@ -3,11 +3,20 @@ import { Link } from 'react-router-dom';
 
 export default function Home() {
   const [text, setText] = useState('');
-  // typing effect phrases
+
   useEffect(() => {
-    // updated phrases and timings
-    const phrases = ['Front-end Developer', 'UI Engineer', "I build things you love"];
-    let pi = 0; let ci = 0; let deleting = false; let mounted = true;
+    // phrases drawn from the homepage copy
+    const phrases = [
+      'I build intelligent systems and experiences that matter',
+      'I’m a passionate AI & ML researcher and front-end developer',
+      'Designer · Engineer · Curious problem solver'
+    ];
+
+    let mounted = true;
+    let pi = 0; // phrase index
+    let ci = 0; // char index
+    let deleting = false;
+    let timer = null;
 
     function tick() {
       if (!mounted) return;
@@ -16,9 +25,8 @@ export default function Home() {
         ci++;
         setText(full.slice(0, ci));
         if (ci === full.length) {
-          deleting = true;
-          // stay for a bit before deleting
-          setTimeout(tick, 1400);
+          // pause before deleting
+          timer = setTimeout(() => { deleting = true; tick(); }, 1400);
           return;
         }
       } else {
@@ -27,25 +35,28 @@ export default function Home() {
         if (ci === 0) {
           deleting = false;
           pi = (pi + 1) % phrases.length;
-          setTimeout(tick, 300);
+          timer = setTimeout(tick, 300);
           return;
         }
       }
-      // slower typing, faster deleting
-      setTimeout(tick, deleting ? 50 : 80);
+      timer = setTimeout(tick, deleting ? 40 : 70);
     }
 
     tick();
-    return () => { mounted = false; };
+    return () => { mounted = false; clearTimeout(timer); };
   }, []);
 
   return (
     <section id="home" className="container page home-hero">
-      <div style={{ textAlign: 'center' }}>
-        <h1 className="page-title">Hi — I'm Darshan Parmar <span id="typing">{text}</span></h1>
-        <p className="lead">I build clear, performant interfaces. I focus on accessible, fast and beautiful UIs.</p>
+      <div style={{ maxWidth: 900, margin: '0 auto', textAlign: 'center' }}>
+        <h1 className="page-title">Hi  I'm Darshan Parmar</h1>
 
-        <p className="hero-sub">Designer · Engineer · Curious problem solver</p>
+        <h2 style={{ marginTop: 8, color: 'var(--text)', fontWeight: 500 }}>
+          <span id="typing">{text}</span>
+          <span style={{ opacity: 0.9, marginLeft: 6 }}>{/* cursor rendered via CSS-like blink in JS */}</span>
+        </h2>
+
+        
 
         <div style={{ display: 'flex', gap: 12, justifyContent: 'center', marginTop: 18 }}>
           <Link to="/projects" className="btn primary">See Projects</Link>
@@ -57,6 +68,7 @@ export default function Home() {
           <a className="btn outline" href="https://linkedin.com/in/dte-gecbh-com-darshan-parmar" target="_blank" rel="noreferrer">LinkedIn</a>
         </div>
       </div>
+      <style>{`#typing::after { content: '|'; margin-left: 6px; opacity: .9; animation: blink 1s step-end infinite; } @keyframes blink { 50% { opacity: 0 } }`}</style>
     </section>
   );
 }
