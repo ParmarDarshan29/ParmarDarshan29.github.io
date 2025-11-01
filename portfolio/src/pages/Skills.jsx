@@ -1,35 +1,57 @@
-const Skills = () => {
-  return (
-    <div style={{ minHeight: '80vh', backgroundColor: '#111', color: '#fff', padding: '2rem' }}>
-      <h1 style={{ color: '#ff6600', fontSize: '2.5rem', marginBottom: '1rem' }}>Technical Skills</h1>
-      <h3 style={{ color: '#fff' }}>Programming Languages:</h3>
-      <p style={{ color: '#ccc' }}>Python, SQL, C, C++</p>
-      
-      <h3 style={{ color: '#fff' }}>Data Science & Machine Learning:</h3>
-      <p style={{ color: '#ccc' }}>NumPy, Pandas, Scikit-learn, XGBoost, LightGBM, Matplotlib, Seaborn</p>
-      
-      <h3 style={{ color: '#fff' }}>Deep Learning Frameworks:</h3>
-      <p style={{ color: '#ccc' }}>TensorFlow, Keras, PyTorch</p>
-      
-      <h3 style={{ color: '#fff' }}>Explainable AI (XAI):</h3>
-      <p style={{ color: '#ccc' }}>SHAP, LIME, Grad-CAM</p>
-      
-      <h3 style={{ color: '#fff' }}>Medical Imaging & Signal Processing:</h3>
-      <p style={{ color: '#ccc' }}>MONAI, NiBabel, NiLearn, OpenCV, MNE-Python</p>
-      
-      <h3 style={{ color: '#fff' }}>Web & Application Development:</h3>
-      <p style={{ color: '#ccc' }}>Flask, Django, HTML, CSS, JavaScript, React.js (basic)</p>
-      
-      <h3 style={{ color: '#fff' }}>Data Engineering & Databases:</h3>
-      <p style={{ color: '#ccc' }}>MySQL, MongoDB, ETL concepts, Power BI, Tableau</p>
-      
-      <h3 style={{ color: '#fff' }}>Tools & Platforms:</h3>
-      <p style={{ color: '#ccc' }}>Git, GitHub, Google Colab, Jupyter, VS Code, Linux</p>
-      
-      <h3 style={{ color: '#fff' }}>Core Concepts:</h3>
-      <p style={{ color: '#ccc' }}>Machine Learning, Deep Learning, Data Structures & Algorithms, Model Deployment, Model Evaluation, Research Ethics, Data Preprocessing</p>
-    </div>
-  );
-};
+import React, { useEffect, useState } from 'react';
 
-export default Skills;
+const STORAGE_KEY = 'portfolio_skills_v1';
+
+function loadSkills() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    return raw ? JSON.parse(raw) : [];
+  } catch {
+    return [];
+  }
+}
+
+export default function Skills() {
+  const [skills, setSkills] = useState([]);
+
+  useEffect(() => {
+    const reload = () => setSkills(loadSkills());
+    // initial load
+    reload();
+
+    // update when another tab / window changes storage
+    window.addEventListener('storage', reload);
+    // also reload when tab becomes visible (useful after admin edits in same tab)
+    document.addEventListener('visibilitychange', () => {
+      if (!document.hidden) reload();
+    });
+
+    return () => {
+      window.removeEventListener('storage', reload);
+      document.removeEventListener('visibilitychange', () => { if (!document.hidden) reload(); });
+    };
+  }, []);
+
+  return (
+    <section id="skills" className="container page">
+      <h2 className="page-title">Skills</h2>
+      <p className="lead">Tools and areas I work in.</p>
+
+      <div style={{ marginTop: 18 }}>
+        {skills.length === 0 ? (
+          <div className="card">
+            <p className="muted">No skills added yet. Add skills via the <a className="link" href="/admin">admin</a> page.</p>
+          </div>
+        ) : (
+          <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
+            {skills.map((s) => (
+              <span key={s} className="tag" style={{ background: 'rgba(249,115,22,0.08)', color: 'var(--accent)' }}>
+                {s}
+              </span>
+            ))}
+          </div>
+        )}
+      </div>
+    </section>
+  );
+}

@@ -1,23 +1,14 @@
 import React from 'react';
 
-const Internships = () => {
-  const internships = [
-    { id: 'comp-a', title: 'Company A — Software Intern', href: '/internships/company-a' },
-    { id: 'comp-b', title: 'Company B — Research Intern', href: '/internships/company-b' },
-  ];
-
+export default function Internships() {
   return (
-    <div className="container" style={{ padding: '2rem' }}>
-      <h1>Internships</h1>
-      <ul>
-        {internships.map(i => (
-          <li key={i.id}>
-            <a href={i.href} title={i.title}>{i.title}</a>
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
-};
+    <section id="internships" className="container page">
+      <h2 className="page-title">Internships</h2>
+      <p className="lead">Internship details have been removed — managed via the admin interface.</p>
 
-export default Internships;
+      <div className="card" style={{ marginTop: 16 }}>
+        <p className="muted">Add or update internship/project details using the admin page.</p>
+      </div>
+    </section>
+  );
+}

@@ -1,23 +1,14 @@
 import React from 'react';
 
-const Research = () => {
-  const items = [
-    { id: 'eeg-ptsd', title: 'EEG-based PTSD Diagnosis — Paper & summary', href: '/research/eeg-ptsd' },
-    { id: 'brain-tumor', title: 'Brain Tumor Detection — Project', href: '/research/brain-tumor' },
-  ];
-
+export default function Research() {
   return (
-    <div className="container" style={{ padding: '2rem' }}>
-      <h1>Research</h1>
-      <ul>
-        {items.map(it => (
-          <li key={it.id}>
-            <a href={it.href} title={it.title}>{it.title}</a>
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
-};
+    <section id="research" className="container page">
+      <h2 className="page-title">Research</h2>
+      <p className="lead">Research details removed — managed via the admin interface.</p>
 
-export default Research;
+      <div className="card" style={{ marginTop: 16 }}>
+        <p className="muted">Add research/project info via the admin page.</p>
+      </div>
+    </section>
+  );
+}

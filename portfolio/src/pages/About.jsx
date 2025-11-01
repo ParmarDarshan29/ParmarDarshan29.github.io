@@ -1,21 +1,48 @@
-const About = () => {
-  return (
-    <div style={{ minHeight: '80vh', backgroundColor: '#222', color: '#fff', padding: '2rem' }}>
-      <h1 style={{ color: '#ff6600', fontSize: '2.5rem', marginBottom: '1rem' }}>About Me</h1>
-      <p style={{ color: '#ccc', fontSize: '1.2rem', lineHeight: '1.8' }}>
-        I am Darshan Parmar, a Computer Engineering student at Government Engineering College, Bharuch. My passion lies in Data Science, Machine Learning, and AI, particularly in healthcare applications. Through projects like suRxit and Brain Tumor Detection, I've gained hands-on experience in building scalable ML pipelines and medical imaging frameworks. My research on EEG-based PTSD diagnosis highlights my commitment to ethical and interpretable AI.
-      </p>
-      <h2 style={{ color: '#ff6600', fontSize: '2rem', marginTop: '2rem' }}>Leadership Experience</h2>
-      <ul style={{ color: '#ccc', fontSize: '1.2rem', lineHeight: '1.8' }}>
-        <li><strong>Department Coordinator, TechTonic 2k24:</strong> Led department event operations, coordinating teams and schedules for technical competitions and workshops.</li>
-        <li><strong>Lead Coordinator, Finance/Budget Committee, TechTonic 2k25:</strong> Managed budgeting, procurement, and expense tracking for a national-level techfest; optimized resource allocation and maintained financial records.</li>
-        <li><strong>IEEE SB Treasurer:</strong> Handled budgeting, fund management, and reporting for IEEE technical events; aligned financial planning with tech initiatives.</li>
-      </ul>
-      <p style={{ color: '#ccc', fontSize: '1.2rem' }}>
-        Bharuch, Gujarat | +91 8141902382 | connect.darshanparmar@gmail.com
-      </p>
-    </div>
-  );
-};
+import React from 'react';
 
-export default About;
+export default function About() {
+  return (
+    <section id="about" className="container page">
+      <h2 className="page-title" style={{ color: 'var(--accent)' }}>About Me</h2>
+      <p className="lead">I build clean, accessible and performance-focused front-end experiences.</p>
+
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 320px', gap: 20, marginTop: 16 }}>
+        <div className="card" style={{ padding: 20 }}>
+          <p style={{ color: 'var(--text)', marginBottom: 12 }}>
+            Hi — I'm Darshan Parmar, a front-end developer focused on building simple, robust and accessible web applications.
+            I care about readable code, good typography and performant delivery.
+          </p>
+
+          <ul style={{ marginTop: 8, color: 'var(--muted)' }}>
+            <li><strong>Focus:</strong> Interfaces, performance, accessibility</li>
+            <li><strong>Stack:</strong> React, Vite, JavaScript, CSS</li>
+            <li><strong>Location:</strong> Remote / Bharuch, Gujarat</li>
+          </ul>
+
+          <div style={{ marginTop: 14, display: 'flex', gap: 12 }}>
+            <a className="btn primary" href="/resume.pdf" target="_blank" rel="noreferrer">Download CV</a>
+            <a className="link" href="/contact">Contact</a>
+          </div>
+        </div>
+
+        <aside className="card" style={{ padding: 20, background: 'linear-gradient(180deg, rgba(249,115,22,0.06), rgba(249,115,22,0.02))' }}>
+          <h4 style={{ marginTop: 0, color: 'var(--bg)' }}>Skills</h4>
+          <div className="skill-list" style={{ marginTop: 10 }}>
+            <span className="tag">React</span>
+            <span className="tag">JavaScript</span>
+            <span className="tag">HTML</span>
+            <span className="tag">CSS</span>
+            <span className="tag">Accessibility</span>
+            <span className="tag">Performance</span>
+          </div>
+        </aside>
+      </div>
+
+      <style>{`
+        @media (max-width: 880px) {
+          #about .container > div { grid-template-columns: 1fr; }
+        }
+      `}</style>
+    </section>
+  );
+}
