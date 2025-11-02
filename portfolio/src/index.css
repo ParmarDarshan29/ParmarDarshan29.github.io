@@ -200,6 +200,20 @@ main { padding-bottom: 92px; }
   .row { flex-direction:column; }
 }
 
+/* Make images inside cards responsive */
+.card img { max-width: 100%; height: auto; display: block; }
+
+/* Disable sticky aside on small screens to avoid overlap */
+@media (max-width: 880px) {
+  .about-aside { position: static; top: auto; }
+}
+
+/* Reduce page padding on small viewports for better fit */
+@media (max-width: 480px) {
+  .page { padding: 1rem; }
+  .container { width: 96%; }
+}
+
 /* profile photo styling */
 .profile-photo {
   border: 3px solid rgba(255,255,255,0.06);
