@@ -15,6 +15,7 @@ export default function Header() {
           <NavLink to="/skills" className={active}>Skills</NavLink>
           <NavLink to="/research" className={active}>Research</NavLink>
           <NavLink to="/internships" className={active}>Internships</NavLink>
+          <NavLink to="/activities" className={active}>Activities</NavLink>
           <NavLink to="/projects" className={active}>Projects</NavLink>
           <NavLink to="/contact" className={active}>Contact</NavLink>
 

@@ -23,6 +23,24 @@ function save(key, list) {
   localStorage.setItem(key, JSON.stringify(list));
 }
 
+function normalizeImageUrl(url) {
+  if (!url) return '';
+  url = url.trim();
+  // Google Drive share links -> direct view
+  // patterns: https://drive.google.com/file/d/FILEID/view?usp=sharing
+  // or https://drive.google.com/open?id=FILEID
+  const driveFileMatch = url.match(/drive\.google\.com\/file\/d\/([a-zA-Z0-9_-]+)\/?/);
+  if (driveFileMatch) {
+    return `https://drive.google.com/uc?export=view&id=${driveFileMatch[1]}`;
+  }
+  const driveOpenMatch = url.match(/[?&]id=([a-zA-Z0-9_-]+)/);
+  if (driveOpenMatch) {
+    return `https://drive.google.com/uc?export=view&id=${driveOpenMatch[1]}`;
+  }
+  // direct link already
+  return url;
+}
+
 export default function Admin() {
   const [authenticated, setAuthenticated] = useState(false);
   const [password, setPassword] = useState('');
@@ -109,7 +127,7 @@ export default function Admin() {
         desc: form.desc || '',
         tags: form.tags ? form.tags.split(',').map(t => t.trim()).filter(Boolean) : [],
         url: form.url || '',
-        image: form.image || '',
+        image: normalizeImageUrl(form.image || ''),
       };
     } else if (section === 'internships') {
       payload = {
@@ -118,11 +136,11 @@ export default function Admin() {
         role: form.role || '',
         period: form.period || '',
         desc: form.desc || '',
-        image: form.image || '',
+        image: normalizeImageUrl(form.image || ''),
       };
     } else if (section === 'activities') {
       // images: comma separated URLs
-      const imgs = (form.images || '').split(',').map(s => s.trim()).filter(Boolean);
+      const imgs = (form.images || '').split(',').map(s => s.trim()).filter(Boolean).map(normalizeImageUrl);
       payload = {
         id: form.id || Date.now().toString(36),
         title: form.title || '',
@@ -138,6 +156,7 @@ export default function Admin() {
         summary: form.summary || '',
         tags: form.tags ? form.tags.split(',').map(t => t.trim()).filter(Boolean) : [],
         url: form.url || '',
+        image: normalizeImageUrl(form.image || ''),
       };
     }
 
@@ -156,6 +175,14 @@ export default function Admin() {
       setForm({
         ...it,
         images: (it.images || []).join(', '),
+      });
+      return;
+    }
+    if (section === 'research') {
+      setForm({
+        ...it,
+        tags: it.tags ? (it.tags.join ? it.tags.join(', ') : it.tags) : '',
+        image: it.image || '',
       });
       return;
     }
@@ -295,6 +322,9 @@ export default function Admin() {
 
               <label className="label" style={{ marginTop: 8 }}>Summary</label>
               <textarea className="input" name="summary" value={form.summary || ''} onChange={handleChange} style={{ minHeight: 80 }} />
+
+              <label className="label" style={{ marginTop: 8 }}>Image URL (optional)</label>
+              <input className="input" name="image" value={form.image || ''} onChange={handleChange} />
 
               <label className="label" style={{ marginTop: 8 }}>Tags (comma separated)</label>
               <input className="input" name="tags" value={form.tags || ''} onChange={handleChange} />

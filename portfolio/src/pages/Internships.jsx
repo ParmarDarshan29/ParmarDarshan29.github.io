@@ -40,7 +40,10 @@ export default function Internships() {
             {items.map(it => (
               <div key={it.id} className="card" style={{ display: 'flex', gap: 12, alignItems: 'flex-start' }}>
                 {it.image ? (
-                  <a href={it.image} target="_blank" rel="noreferrer"><img src={it.image} alt={`${it.company} certificate`} style={{ width: 140, height: 100, objectFit: 'cover', borderRadius: 8 }} /></a>
+                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                    <a href={it.image} target="_blank" rel="noreferrer"><img src={it.image} alt={`${it.company} certificate`} style={{ width: 140, height: 100, objectFit: 'cover', borderRadius: 8 }} /></a>
+                    <a className="link" href={it.image} target="_blank" rel="noreferrer" style={{ marginTop: 8, fontSize: 13 }}>View</a>
+                  </div>
                 ) : null}
                 <div>
                   <h3 style={{ margin: 0 }}>{it.company} <span className="muted">— {it.role}</span></h3>

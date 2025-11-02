@@ -47,7 +47,10 @@ export default function Activities() {
                     {it.images && it.images.length > 1 ? (
                       <div style={{ display: 'flex', gap: 8, marginTop: 10, flexWrap: 'wrap' }}>
                         {it.images.map((img, idx) => (
-                          <a key={idx} href={img} target="_blank" rel="noreferrer"><img src={img} alt={`${it.title} ${idx+1}`} style={{ width: 120, height: 80, objectFit: 'cover', borderRadius: 6 }} /></a>
+                          <div key={idx} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                            <a href={img} target="_blank" rel="noreferrer"><img src={img} alt={`${it.title} ${idx+1}`} style={{ width: 120, height: 80, objectFit: 'cover', borderRadius: 6 }} /></a>
+                            <a className="link" href={img} target="_blank" rel="noreferrer" style={{ marginTop: 6, fontSize: 12 }}>View</a>
+                          </div>
                         ))}
                       </div>
                     ) : null}
