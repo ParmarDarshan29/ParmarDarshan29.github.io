@@ -14,6 +14,18 @@ function loadInternships() {
 export default function Internships() {
   const [items, setItems] = useState([]);
 
+  function toPreviewUrl(url) {
+    if (!url) return '';
+    const u = url.trim();
+    const m1 = u.match(/drive\.google\.com\/file\/d\/([a-zA-Z0-9_-]+)\/?/);
+    if (m1) return `https://drive.google.com/uc?export=view&id=${m1[1]}`;
+    const m2 = u.match(/[?&]id=([a-zA-Z0-9_-]+)/);
+    if (m2) return `https://drive.google.com/uc?export=view&id=${m2[1]}`;
+    const m3 = u.match(/uc\?export=download&id=([a-zA-Z0-9_-]+)/);
+    if (m3) return `https://drive.google.com/uc?export=view&id=${m3[1]}`;
+    return u;
+  }
+
   useEffect(() => {
     const reload = () => setItems(loadInternships());
     reload();
@@ -41,8 +53,51 @@ export default function Internships() {
               <div key={it.id} className="card" style={{ display: 'flex', gap: 12, alignItems: 'flex-start' }}>
                 {it.image ? (
                   <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                    <a href={it.image} target="_blank" rel="noreferrer"><img src={it.image} alt={`${it.company} certificate`} style={{ width: 140, height: 100, objectFit: 'cover', borderRadius: 8 }} /></a>
-                    <a className="link" href={it.image} target="_blank" rel="noreferrer" style={{ marginTop: 8, fontSize: 13 }}>View</a>
+                    <a href={toPreviewUrl(it.image)} target="_blank" rel="noreferrer noopener">
+                      <img
+                        src={it.image}
+                        alt={`${it.company} certificate`}
+                        style={{ width: 140, height: 100, objectFit: 'cover', borderRadius: 8 }}
+                        onError={(e) => {
+                          (async () => {
+                            const img = e.target;
+                            if (img.__triedBlob) { img.onerror = null; img.src = '/placeholder.svg'; return; }
+                            img.__triedBlob = true;
+                            const src = img.src || '';
+                            try {
+                              const resp = await fetch(src, { mode: 'cors' });
+                              if (resp && resp.ok) {
+                                const ct = (resp.headers.get('content-type') || '').toLowerCase();
+                                if (ct.startsWith('image/')) {
+                                  const blob = await resp.blob();
+                                  img.onerror = null;
+                                  img.src = URL.createObjectURL(blob);
+                                  return;
+                                }
+                              }
+                              const m = src.match(/drive\.google\.com\/(?:file\/d\/([a-zA-Z0-9_-]+)|open\?id=([a-zA-Z0-9_-]+))/);
+                              const id = m ? (m[1] || m[2]) : null;
+                              if (id) {
+                                const alt = `https://drive.google.com/uc?export=download&id=${id}`;
+                                const r2 = await fetch(alt, { mode: 'cors' });
+                                if (r2 && r2.ok && (r2.headers.get('content-type') || '').startsWith('image/')) {
+                                  const b2 = await r2.blob();
+                                  img.onerror = null;
+                                  img.src = URL.createObjectURL(b2);
+                                  return;
+                                }
+                              }
+                            } catch (err) {
+                              // ignore
+                            }
+                            img.onerror = null;
+                            img.src = '/placeholder.svg';
+                          })();
+                        }}
+                      />
+                    </a>
+                    <a className="link" href={toPreviewUrl(it.image)} target="_blank" rel="noreferrer noopener" style={{ marginTop: 8, fontSize: 13 }}>View</a>
+                    {it.viewUrl ? <a className="link" href={toPreviewUrl(it.viewUrl)} target="_blank" rel="noreferrer noopener" style={{ marginTop: 8, fontSize: 13, marginLeft: 8 }}>Open certificate</a> : null}
                   </div>
                 ) : null}
                 <div>

@@ -41,6 +41,26 @@ function normalizeImageUrl(url) {
   return url;
 }
 
+function normalizeViewUrl(url) {
+  if (!url) return '';
+  url = url.trim();
+  // If it's a Google Drive link, prefer the 'export=view' preview form so the browser opens it
+  const driveFileMatch = url.match(/drive\.google\.com\/file\/d\/([a-zA-Z0-9_-]+)\/?.*/);
+  if (driveFileMatch) {
+    return `https://drive.google.com/uc?export=view&id=${driveFileMatch[1]}`;
+  }
+  const driveOpenMatch = url.match(/[?&]id=([a-zA-Z0-9_-]+)/);
+  if (driveOpenMatch) {
+    return `https://drive.google.com/uc?export=view&id=${driveOpenMatch[1]}`;
+  }
+  // If the URL is already a uc?export=download, switch to export=view
+  const downloadMatch = url.match(/uc\?export=download&id=([a-zA-Z0-9_-]+)/);
+  if (downloadMatch) {
+    return `https://drive.google.com/uc?export=view&id=${downloadMatch[1]}`;
+  }
+  return url;
+}
+
 export default function Admin() {
   const [authenticated, setAuthenticated] = useState(false);
   const [password, setPassword] = useState('');
@@ -136,7 +156,10 @@ export default function Admin() {
         role: form.role || '',
         period: form.period || '',
         desc: form.desc || '',
+        // image: public-facing thumbnail (Google-hosted image URL)
         image: normalizeImageUrl(form.image || ''),
+  // viewUrl: link (typically a Drive share) that opens the full certificate or personal photo
+  viewUrl: normalizeViewUrl(form.viewUrl || ''),
       };
     } else if (section === 'activities') {
       // images: comma separated URLs
@@ -148,6 +171,8 @@ export default function Admin() {
         location: form.location || '',
         desc: form.desc || '',
         images: imgs,
+  // optional view link (e.g. Drive) to view a full-size photo or certificate
+  viewUrl: normalizeViewUrl(form.viewUrl || ''),
       };
     } else if (section === 'research') {
       payload = {
@@ -175,6 +200,7 @@ export default function Admin() {
       setForm({
         ...it,
         images: (it.images || []).join(', '),
+        viewUrl: it.viewUrl || '',
       });
       return;
     }
@@ -197,7 +223,11 @@ export default function Admin() {
     const key = KEYS[section];
     if (!window.confirm('Remove this entry?')) return;
     if (section === 'skills') {
-      const next = (items || []).filter(s => s !== idOrVal);
+      // items may be strings or objects { name, image }
+      const next = (items || []).filter(s => {
+        const name = (typeof s === 'string') ? s : (s && s.name) || '';
+        return name !== idOrVal;
+      });
       setItems(next);
       save(key, next);
       return;
@@ -291,6 +321,9 @@ export default function Admin() {
               <label className="label" style={{ marginTop: 8 }}>Certificate Image URL (optional)</label>
               <input className="input" name="image" value={form.image || ''} onChange={handleChange} placeholder="https://.../certificate.jpg" />
 
+              <label className="label" style={{ marginTop: 8 }}>Certificate View URL (optional)</label>
+              <input className="input" name="viewUrl" value={form.viewUrl || ''} onChange={handleChange} placeholder="https://drive.google.com/...?id=FILEID" />
+
               <label className="label" style={{ marginTop: 8 }}>Notes / Description</label>
               <textarea className="input" name="desc" value={form.desc || ''} onChange={handleChange} style={{ minHeight: 80 }} />
             </>
@@ -309,6 +342,9 @@ export default function Admin() {
 
               <label className="label" style={{ marginTop: 8 }}>Image URLs (comma separated)</label>
               <input className="input" name="images" value={form.images || ''} onChange={handleChange} placeholder="https://.../img1.jpg, https://.../img2.jpg" />
+
+              <label className="label" style={{ marginTop: 8 }}>View URL (optional) — e.g. Drive link to full photo/certificate</label>
+              <input className="input" name="viewUrl" value={form.viewUrl || ''} onChange={handleChange} placeholder="https://drive.google.com/...?id=FILEID" />
 
               <label className="label" style={{ marginTop: 8 }}>Notes / Description</label>
               <textarea className="input" name="desc" value={form.desc || ''} onChange={handleChange} style={{ minHeight: 80 }} />
@@ -396,6 +432,7 @@ export default function Admin() {
                   </div>
                 </div>
                 <div style={{ display: 'flex', gap: 8 }}>
+                  {it.viewUrl ? <a className="btn" href={it.viewUrl} target="_blank" rel="noreferrer">View</a> : null}
                   <button className="btn" onClick={() => edit(it)}>Edit</button>
                   <button className="btn" onClick={() => remove(it.id)}>Delete</button>
                 </div>
@@ -421,6 +458,7 @@ export default function Admin() {
                   </div>
                 </div>
                 <div style={{ display: 'flex', gap: 8 }}>
+                  {a.viewUrl ? <a className="btn" href={a.viewUrl} target="_blank" rel="noreferrer">View</a> : null}
                   <button className="btn" onClick={() => edit(a)}>Edit</button>
                   <button className="btn" onClick={() => remove(a.id)}>Delete</button>
                 </div>

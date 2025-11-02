@@ -38,7 +38,49 @@ export default function Research() {
               <div key={it.id} className="card">
                 <div style={{ display: 'flex', gap: 12, alignItems: 'flex-start' }}>
                   {it.image ? (
-                    <a href={it.image} target="_blank" rel="noreferrer"><img src={it.image} alt={it.title} style={{ width: 200, height: 140, objectFit: 'cover', borderRadius: 8 }} /></a>
+                    <a href={it.image} target="_blank" rel="noreferrer">
+                      <img
+                        src={it.image}
+                        alt={it.title}
+                        style={{ width: 200, height: 140, objectFit: 'cover', borderRadius: 8 }}
+                        onError={(e) => {
+                          (async () => {
+                            const img = e.target;
+                            if (img.__triedBlob) { img.onerror = null; img.src = '/placeholder.svg'; return; }
+                            img.__triedBlob = true;
+                            const src = img.src || '';
+                            try {
+                              const resp = await fetch(src, { mode: 'cors' });
+                              if (resp && resp.ok) {
+                                const ct = (resp.headers.get('content-type') || '').toLowerCase();
+                                if (ct.startsWith('image/')) {
+                                  const blob = await resp.blob();
+                                  img.onerror = null;
+                                  img.src = URL.createObjectURL(blob);
+                                  return;
+                                }
+                              }
+                              const m = src.match(/drive\.google\.com\/(?:file\/d\/([a-zA-Z0-9_-]+)|open\?id=([a-zA-Z0-9_-]+))/);
+                              const id = m ? (m[1] || m[2]) : null;
+                              if (id) {
+                                const alt = `https://drive.google.com/uc?export=download&id=${id}`;
+                                const r2 = await fetch(alt, { mode: 'cors' });
+                                if (r2 && r2.ok && (r2.headers.get('content-type') || '').startsWith('image/')) {
+                                  const b2 = await r2.blob();
+                                  img.onerror = null;
+                                  img.src = URL.createObjectURL(b2);
+                                  return;
+                                }
+                              }
+                            } catch (err) {
+                              // ignore
+                            }
+                            img.onerror = null;
+                            img.src = '/placeholder.svg';
+                          })();
+                        }}
+                      />
+                    </a>
                   ) : null}
                   <div>
                     <h3 style={{ margin: 0 }}>{it.title}</h3>
