@@ -31,13 +31,4 @@ Build (production)
 ```bash
 https://parmardarshan29.github.io/
 
-This is my portfolio according to you nothing too much.
-Beyond AI, I’m interested in building sleek, performant web interfaces and exploring how design and data can work together to create better digital experiences.
 
-Education
-B.E. in Computer Engineering
-Government Engineering College, Bharuch
-(Expected Graduation: 2026)
-
-Location
-Remote / Bharuch, Gujarat
