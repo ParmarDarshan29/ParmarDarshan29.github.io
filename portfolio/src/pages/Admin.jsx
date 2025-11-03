@@ -262,6 +262,41 @@ export default function Admin() {
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 12 }}>
         <h2 className="page-title">Admin — Manage content</h2>
         <div className="admin-actions" style={{ display: 'flex', gap: 8 }}>
+          {/* Export / Import global data so admins can share across browsers/accounts */}
+          <input id="admin-import-file" type="file" accept="application/json" style={{ display: 'none' }} onChange={(e) => {
+            const f = e.target.files && e.target.files[0];
+            if (!f) return;
+            const reader = new FileReader();
+            reader.onload = (ev) => {
+              try {
+                const parsed = JSON.parse(ev.target.result);
+                // write known keys only
+                Object.keys(KEYS).forEach(k => {
+                  if (parsed[KEYS[k]]) localStorage.setItem(KEYS[k], JSON.stringify(parsed[KEYS[k]]));
+                });
+                // reload current section
+                setItems(load(KEYS[section]));
+                alert('Import complete. You may need to refresh other browser windows to see changes.');
+              } catch (err) {
+                alert('Failed to import JSON: ' + err.message);
+              }
+            };
+            reader.readAsText(f);
+            e.target.value = '';
+          }} />
+          <button className="btn" onClick={() => {
+            // build export object with known keys
+            const exportObj = {};
+            Object.keys(KEYS).forEach(k => {
+              try { exportObj[KEYS[k]] = JSON.parse(localStorage.getItem(KEYS[k]) || '[]'); } catch { exportObj[KEYS[k]] = []; }
+            });
+            const blob = new Blob([JSON.stringify(exportObj, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url; a.download = 'portfolio-data-export.json'; document.body.appendChild(a); a.click(); a.remove();
+            URL.revokeObjectURL(url);
+          }}>Export data</button>
+          <button className="btn" onClick={() => document.getElementById('admin-import-file').click()}>Import data</button>
           <button className="btn" onClick={() => setSectionAndLoad('projects')}>Projects</button>
           <button className="btn" onClick={() => setSectionAndLoad('skills')}>Skills</button>
           <button className="btn" onClick={() => setSectionAndLoad('internships')}>Internships</button>
