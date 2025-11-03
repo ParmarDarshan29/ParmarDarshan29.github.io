@@ -105,6 +105,76 @@ export default function Admin() {
 
   const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
 
+  // Convert File to data URL (with optional resizing)
+  const fileToDataUrl = (file, maxWidth = 1600, quality = 0.85) => new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onerror = () => reject(new Error('Failed to read file'));
+    reader.onload = async (ev) => {
+      try {
+        const src = ev.target.result;
+        // If image is small or not an image, return as-is
+        if (!file.type.startsWith('image/')) return resolve(src);
+        // Create image to resize
+        const img = new Image();
+        img.onload = () => {
+          try {
+            const ratio = img.width / img.height;
+            let w = img.width;
+            let h = img.height;
+            if (w > maxWidth) {
+              w = maxWidth;
+              h = Math.round(w / ratio);
+            }
+            const canvas = document.createElement('canvas');
+            canvas.width = w;
+            canvas.height = h;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0, w, h);
+            const mime = file.type === 'image/png' ? 'image/png' : 'image/jpeg';
+            const dataUrl = canvas.toDataURL(mime, quality);
+            resolve(dataUrl);
+          } catch (err) {
+            resolve(src);
+          }
+        };
+        img.onerror = () => resolve(src);
+        img.src = src;
+      } catch (err) {
+        resolve(ev.target.result);
+      }
+    };
+    reader.readAsDataURL(file);
+  });
+
+  const handleFileInput = async (files, field) => {
+    if (!files || files.length === 0) return;
+    try {
+      if (field === 'images') {
+        // multiple
+        const arr = [];
+        for (let i = 0; i < files.length; i++) {
+          const f = files[i];
+          if (f.size > 5 * 1024 * 1024) { // 5MB limit per file
+            alert(`${f.name} is larger than 5MB and will be skipped.`);
+            continue;
+          }
+          const data = await fileToDataUrl(f);
+          arr.push(data);
+        }
+        setForm({ ...form, images: ((form.images || '') ? form.images + ', ' : '') + arr.join(', ') });
+      } else {
+        const f = files[0];
+        if (f.size > 8 * 1024 * 1024) {
+          if (!confirm('File is larger than 8MB and may exceed localStorage limits. Proceed?')) return;
+        }
+        const data = await fileToDataUrl(f);
+        setForm({ ...form, [field]: data });
+      }
+    } catch (err) {
+      alert('Failed to process file: ' + err.message);
+    }
+  };
+
   // Generic add/edit for list-based entries
   const submitItem = (e) => {
     e.preventDefault();
@@ -330,7 +400,10 @@ export default function Admin() {
               <input className="input" name="url" value={form.url || ''} onChange={handleChange} />
 
               <label className="label" style={{ marginTop: 8 }}>Image URL (optional)</label>
-              <input className="input" name="image" value={form.image || ''} onChange={handleChange} />
+              <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+                <input className="input" name="image" value={form.image || ''} onChange={handleChange} />
+                <input type="file" accept="image/*" onChange={(e) => handleFileInput(e.target.files, 'image')} />
+              </div>
             </>
           )}
 
@@ -354,7 +427,10 @@ export default function Admin() {
               <input className="input" name="period" value={form.period || ''} onChange={handleChange} />
 
               <label className="label" style={{ marginTop: 8 }}>Certificate Image URL (optional)</label>
-              <input className="input" name="image" value={form.image || ''} onChange={handleChange} placeholder="https://.../certificate.jpg" />
+              <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+                <input className="input" name="image" value={form.image || ''} onChange={handleChange} placeholder="https://.../certificate.jpg" />
+                <input type="file" accept="image/*" onChange={(e) => handleFileInput(e.target.files, 'image')} />
+              </div>
 
               <label className="label" style={{ marginTop: 8 }}>Certificate View URL (optional)</label>
               <input className="input" name="viewUrl" value={form.viewUrl || ''} onChange={handleChange} placeholder="https://drive.google.com/...?id=FILEID" />
@@ -376,7 +452,10 @@ export default function Admin() {
               <input className="input" name="location" value={form.location || ''} onChange={handleChange} />
 
               <label className="label" style={{ marginTop: 8 }}>Image URLs (comma separated)</label>
-              <input className="input" name="images" value={form.images || ''} onChange={handleChange} placeholder="https://.../img1.jpg, https://.../img2.jpg" />
+              <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+                <input className="input" name="images" value={form.images || ''} onChange={handleChange} placeholder="https://.../img1.jpg, https://.../img2.jpg" />
+                <input type="file" accept="image/*" multiple onChange={(e) => handleFileInput(e.target.files, 'images')} />
+              </div>
 
               <label className="label" style={{ marginTop: 8 }}>View URL (optional) — e.g. Drive link to full photo/certificate</label>
               <input className="input" name="viewUrl" value={form.viewUrl || ''} onChange={handleChange} placeholder="https://drive.google.com/...?id=FILEID" />
@@ -395,7 +474,10 @@ export default function Admin() {
               <textarea className="input" name="summary" value={form.summary || ''} onChange={handleChange} style={{ minHeight: 80 }} />
 
               <label className="label" style={{ marginTop: 8 }}>Image URL (optional)</label>
-              <input className="input" name="image" value={form.image || ''} onChange={handleChange} />
+              <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+                <input className="input" name="image" value={form.image || ''} onChange={handleChange} />
+                <input type="file" accept="image/*" onChange={(e) => handleFileInput(e.target.files, 'image')} />
+              </div>
 
               <label className="label" style={{ marginTop: 8 }}>Tags (comma separated)</label>
               <input className="input" name="tags" value={form.tags || ''} onChange={handleChange} />
