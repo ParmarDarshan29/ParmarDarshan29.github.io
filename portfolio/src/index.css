@@ -76,8 +76,9 @@ body {
 }
 
 /* page utilities */
-.page { min-height: 80vh; padding: 2rem; animation: fadeIn 0.9s ease; }
-.container { width: min(1100px, 92%); margin: 0 auto; }
+html { font-size: clamp(14px, 1.35vw, 16px); }
+.page { min-height: 80vh; padding: clamp(12px, 2vw, 32px); animation: fadeIn 0.9s ease; }
+.container { width: min(1100px, 94%); margin: 0 auto; }
 /* ensure main has bottom padding so fixed footer doesn't overlap content */
 main { padding-bottom: 92px; }
 
@@ -129,6 +130,44 @@ main { padding-bottom: 92px; }
 .research-grid { display:grid; gap:18px; grid-template-columns: repeat(auto-fit, minmax(300px,1fr)); margin-top:1rem; }
 .research-card { display:flex; flex-direction:column; min-height:160px; }
 .card-head { display:flex; justify-content:space-between; align-items:center; gap:8px; }
+
+/* Research hero image styling */
+
+/* Research hero image styling */
+.research-hero {
+  width: 100%;
+  max-height: 45vh;
+  height: auto;
+  object-fit: cover;
+  border-radius: 10px;
+  display: block;
+  margin-bottom: 12px;
+}
+
+/* make research hero span the full card width (negate card padding) so the image appears 'full-bleed' inside the card */
+.card > .research-hero {
+  margin: -24px -24px 12px -24px; /* card padding is 1.5rem = 24px */
+  width: calc(100% + 48px);
+  border-radius: 10px 10px 0 0;
+}
+
+
+.poster-hero {
+  width: 100%;
+  max-height: 60vh;
+  height: auto;
+  object-fit: contain;
+  display: block;
+  border-radius: 8px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.45);
+}
+
+/* Slightly larger heading for the poster section */
+.poster-heading {
+  font-size: 1.18rem;
+  font-weight: 800;
+  margin: 12px 0 8px 0;
+}
 .card-title { margin:0; font-size:1.05rem; color: var(--white); }
 .summary { margin:10px 0; color: var(--muted); line-height:1.5; }
 
@@ -175,24 +214,57 @@ main { padding-bottom: 92px; }
 .hero-sub { color: rgba(255,255,255,0.8); margin-top: 6px; font-weight: 600; }
 .social-row .btn { padding: 0.5rem 0.9rem; font-weight:700; }
 
-/* Admin layout tweaks */
-.admin-actions { flex-wrap: wrap; }
-.admin-actions .btn { min-width: 120px; }
-@media (max-width: 880px) {
-  .admin-actions { justify-content: center; }
+/* Projects horizontal card layout */
+.projects-grid { display: flex; flex-direction: column; gap: 16px; }
+.project-card { display: flex; gap: 16px; align-items: flex-start; padding: 12px; }
+.project-card .thumb { width: 260px; height: 160px; background-size: cover; background-position: center; border-radius: 8px; flex: 0 0 260px; }
+.project-card .project-body { flex: 1; }
+@media (max-width: 900px) {
+  /* stack project card vertically on smaller viewports */
+  .project-card { flex-direction: column; align-items: stretch; }
+  .project-card .thumb { width: 100%; aspect-ratio: 16/10; height: auto; min-height: 160px; }
 }
 
-/* Admin form/list layout: keep form and list stacked on small screens */
-@media (min-width: 900px) {
-  .container > .card + .card { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+@media (max-width: 480px) {
+  .page { padding: 12px; }
+  .page-title { font-size: 1.6rem; }
+  .lead { font-size: 0.98rem; }
+  .project-card { padding: 10px; }
+  .poster-hero { max-height: 45vh; }
+}
+
+/* Skills grid and LED fill hover effect */
+.skills-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; }
+.skill-card { display: flex; align-items: center; gap: 12px; padding: 10px; border-radius: 8px; background: rgba(255,255,255,0.02); cursor: default; transition: transform 180ms ease, box-shadow 180ms ease; }
+.skill-card:focus, .skill-card:hover { transform: translateY(-4px); box-shadow: 0 8px 24px rgba(0,0,0,0.25); }
+.skill-icon-wrapper { flex: 0 0 auto; }
+.skill-icon { position: relative; width: 56px; height: 56px; border-radius: 12px; overflow: hidden; display:flex; align-items:center; justify-content:center; background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); }
+.skill-icon img { width: 70%; height: 70%; object-fit: contain; display: block; }
+.skill-initials { font-weight: 700; color: var(--white); font-size: 16px; }
+
+/* When the icon is a logo, show it on a white rounded chip so it is visible in dark mode */
+.skill-icon.has-img { background: #fff; box-shadow: 0 6px 18px rgba(2,6,23,0.32); }
+.skill-icon.has-img .skill-img { width: 70%; height: 70%; object-fit: contain; border-radius: 8px; padding: 6px; background: #fff; display: block; transition: transform 220ms ease; }
+.skill-icon.has-img .skill-img:hover { transform: scale(1.06); }
+.skill-icon.has-img .skill-initials { color: var(--text); }
+
+/* LED fill overlay — hidden by default (width: 0) and expands on hover/focus */
+.skill-icon .led { position: absolute; left: 0; top: 0; bottom: 0; width: 0%; background: linear-gradient(90deg, rgba(255,102,0,0.18), rgba(255,204,102,0.12)); pointer-events: none; transition: width 420ms cubic-bezier(.2,.9,.2,1); mix-blend-mode: screen; }
+.skill-card:hover .skill-icon .led, .skill-card:focus .skill-icon .led { width: 100%; }
+
+.skill-name { font-weight: 700; }
+
+@media (max-width: 720px) {
+  .skills-grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); }
+  .skill-icon { width: 48px; height: 48px; }
 }
 
 /* Contact actions layout */
 .contact-actions { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
 @media (max-width: 640px) { .contact-actions { justify-content: center; } }
 
-/* Admin note style for About page */
-.admin-note { background: rgba(255,255,255,0.02); border-left: 4px solid var(--accent); padding: 0.85rem 1rem; border-radius: 8px; color: var(--muted); }
+/* compact note style for About page */
+.about-note { background: rgba(255,255,255,0.02); border-left: 4px solid var(--accent); padding: 0.85rem 1rem; border-radius: 8px; color: var(--muted); }
 
 /* responsive tweaks */
 @media (max-width:640px){
@@ -230,52 +302,61 @@ main { padding-bottom: 92px; }
   top: 88px; /* leave room for sticky header */
 }
 
-/* Projects layout improvements */
+/* Projects layout improvements: vertical stacked list with horizontal rows */
 .projects {
   padding-top: 32px;
   padding-bottom: 32px;
 }
 .projects-grid {
-  display: grid;
+  display: flex;
+  flex-direction: column;
   gap: 18px;
-  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
-  align-items: start;
 }
 
 .project-card {
   display: flex;
-  gap: 16px;
-  align-items: stretch;
-  padding: 12px;
+  gap: 18px;
+  align-items: flex-start;
+  padding: 14px;
   border-radius: 12px;
   border: 1px solid rgba(255,255,255,0.03);
   background: var(--panel);
   transition: transform .18s ease, box-shadow .18s ease;
 }
 
-/* thumbnail */
+/* thumbnail on the left (fluid sizing) */
 .project-card .thumb {
-  width: 160px;
-  min-width: 160px;
-  height: 110px;
-  background-size: cover;
-  background-position: center;
+  width: clamp(140px, 18vw, 260px);
+  min-width: 120px;
+  height: auto;
+  aspect-ratio: 16/10;
   border-radius: 10px;
   box-shadow: inset 0 0 0 1px rgba(255,255,255,0.02);
   flex-shrink: 0;
-  filter: saturate(0.95) contrast(0.95);
+  overflow: hidden;
+  background: rgba(0,0,0,0.06);
+  display:flex; align-items:center; justify-content:center;
 }
 
-/* body */
+.thumb-img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+/* Slightly shrink the retort.ai thumbnail so it fits the box better */
+.project-card.retort-ai .thumb-img {
+  transform: scale(0.88);
+  transform-origin: center;
+  transition: transform 220ms ease;
+}
+.project-card.retort-ai .thumb-img:hover { transform: scale(0.9); }
+
+/* body (right) */
 .project-body {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px;
   flex: 1;
-  justify-content: space-between;
 }
-.project-title { margin: 0; font-size: 1.05rem; color: var(--white); }
-.desc { margin: 0; color: var(--muted); line-height: 1.4; }
+.project-title { margin: 0; font-size: 1.08rem; color: var(--white); }
+.desc { margin: 0; color: var(--muted); line-height: 1.45; }
 
 /* meta row */
 .meta {
@@ -304,7 +385,6 @@ main { padding-bottom: 92px; }
   font-weight: 700;
 }
 
-/* hover */
 .project-card:hover {
   transform: translateY(-6px);
   box-shadow: 0 18px 40px rgba(0,0,0,0.6);

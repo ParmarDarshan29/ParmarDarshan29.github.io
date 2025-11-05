@@ -23,35 +23,30 @@ export default function About() {
           <p className="lead">I build meaningful, interpretable, and performance-focused AI and web experiences.</p>
 
           <p style={{ color: 'var(--text)' }}>
-            Hi  I'm Darshan Parmar, a Computer Engineering student and AI enthusiast from Government Engineering College, Bharuch, affiliated with Gujarat Technological University.
-            My work bridges Machine Learning, Deep Learning, and Explainable AI (XAI) to create transparent and equitable intelligent systems — particularly in healthcare.
+            I’m Darshan Parmar, a Computer Engineering student passionate about Data Science, Artificial Intelligence, Machine Learning, and Deep Learning. I enjoy exploring how data-driven technologies and intelligent systems can solve real-world problems and create meaningful, efficient solutions.
           </p>
 
           <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: 12, marginTop: 12 }}>
             <div>
               <h5 style={{ marginTop: 0, color: 'var(--accent)' }}>Focus</h5>
-              <p className="muted">Explainable AI &amp; Model Interpretability<br/>EEG and Medical Image Analysis<br/>Web &amp; AI System Integration</p>
+              <p className="muted">Data Science · Machine Learning · Deep Learning · AI System Integration</p>
             </div>
 
             <div>
-              <h5 style={{ marginTop: 0, color: 'var(--accent)' }}>Short Bio</h5>
+              <h5 style={{ marginTop: 0, color: 'var(--accent)' }}>Profile</h5>
               <p style={{ color: 'var(--text)', lineHeight: 1.6 }}>
-                I love transforming complex research ideas into real-world, accessible solutions.
-                Currently, I’m researching interpretable PTSD diagnosis using EEG data and developing robust AI-driven healthcare tools that enhance clinical trust and decision-making.
-              </p>
-              <p style={{ marginTop: 8, color: 'var(--text)' }}>
-                Beyond AI, I’m interested in building sleek, performant web interfaces and exploring how design and data can work together to create better digital experiences.
+                I work on end-to-end ML systems, from high-fidelity data extraction and preprocessing to model development and deployment. I enjoy combining research-led approaches with production-ready engineering to deliver tools that are both effective and usable.
               </p>
             </div>
 
             <div>
               <h5 style={{ marginTop: 0, color: 'var(--accent)' }}>Education</h5>
-              <p className="muted">B.E. in Computer Engineering<br/>Government Engineering College, Bharuch<br/>(Expected Graduation: 2026)</p>
+              <p className="muted">Bachelor of Engineering in Computer Engineering<br/>Government Engineering College, Bharuch<br/>Affiliated with Gujarat Technological University<br/>(Expected Graduation: June 2026)</p>
             </div>
 
             <div>
               <h5 style={{ marginTop: 0, color: 'var(--accent)' }}>Location</h5>
-              <p className="muted">Remote / Bharuch, Gujarat</p>
+              <p className="muted">Bharuch, Gujarat, India</p>
             </div>
           </div>
         </div>

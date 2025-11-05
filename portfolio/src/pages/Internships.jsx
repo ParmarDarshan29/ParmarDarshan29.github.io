@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
+import internshipsData from '../data/internships.json';
 
 const STORAGE_KEY = 'portfolio_internships_v1';
 
 function loadInternships() {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
-    return raw ? JSON.parse(raw) : [];
+    // If localStorage is empty (admin UI removed), fall back to bundled JSON data
+    return raw ? JSON.parse(raw) : internshipsData;
   } catch {
     return [];
   }
@@ -45,7 +47,7 @@ export default function Internships() {
       <div style={{ marginTop: 18 }}>
         {items.length === 0 ? (
           <div className="card">
-            <p className="muted">No internships yet. Add details via the <a className="link" href="/admin">admin</a> page.</p>
+            <p className="muted">No internships yet.</p>
           </div>
         ) : (
           <div style={{ display: 'grid', gap: 12 }}>
@@ -57,7 +59,7 @@ export default function Internships() {
                       <img
                         src={it.image}
                         alt={`${it.company} certificate`}
-                        style={{ width: 140, height: 100, objectFit: 'cover', borderRadius: 8 }}
+                        style={{ width: 220, height: 140, objectFit: 'cover', borderRadius: 8 }}
                         onError={(e) => {
                           (async () => {
                             const img = e.target;
@@ -96,14 +98,18 @@ export default function Internships() {
                         }}
                       />
                     </a>
-                    <a className="link" href={toPreviewUrl(it.image)} target="_blank" rel="noreferrer noopener" style={{ marginTop: 8, fontSize: 13 }}>View</a>
-                    {it.viewUrl ? <a className="link" href={toPreviewUrl(it.viewUrl)} target="_blank" rel="noreferrer noopener" style={{ marginTop: 8, fontSize: 13, marginLeft: 8 }}>Open certificate</a> : null}
+                    {/* removed Open certificate link per request */}
                   </div>
                 ) : null}
                 <div>
                   <h3 style={{ margin: 0 }}>{it.company} <span className="muted">— {it.role}</span></h3>
                   <div className="muted">{it.period}</div>
-                  <p style={{ marginTop: 8, color: 'var(--muted)' }}>{it.desc}</p>
+                  <p style={{ marginTop: 8, marginBottom: 14, color: 'var(--muted)' }}>{it.desc}</p>
+                  {it.photo ? (
+                    <div style={{ display: 'flex', justifyContent: 'center', marginTop: 12, width: '100%' }}>
+                      <img src={it.photo} alt={`${it.company} poster`} style={{ display: 'block', width: '100%', maxWidth: 720, borderRadius: 8 }} />
+                    </div>
+                  ) : null}
                 </div>
               </div>
             ))}

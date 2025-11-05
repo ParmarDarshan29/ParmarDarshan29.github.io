@@ -5,11 +5,11 @@ export default function Home() {
   const [text, setText] = useState('');
 
   useEffect(() => {
-    // phrases drawn from the homepage copy
+    // phrases shown in the typing animation
     const phrases = [
-      'I build intelligent systems and experiences that matter',
-      'I’m a passionate AI & ML researcher and front-end developer',
-      'Designer · Engineer · Curious problem solver'
+      'Building intelligent systems with data and code.',
+      'Exploring the world of AI, ML, and Deep Learning.',
+      'Turning ideas into data-driven solutions.'
     ];
 
     let mounted = true;

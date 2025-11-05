@@ -1,36 +1,8 @@
-import React, { useEffect, useState } from 'react';
-
-const STORAGE_KEY = 'portfolio_skills_v1';
-
-function loadSkills() {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    return raw ? JSON.parse(raw) : [];
-  } catch {
-    return [];
-  }
-}
+import React from 'react';
+import skills from '../data/skills.json';
 
 export default function Skills() {
-  const [skills, setSkills] = useState([]);
-
-  useEffect(() => {
-    const reload = () => setSkills(loadSkills());
-    // initial load
-    reload();
-
-    // update when another tab / window changes storage
-    window.addEventListener('storage', reload);
-    // also reload when tab becomes visible (useful after admin edits in same tab)
-    document.addEventListener('visibilitychange', () => {
-      if (!document.hidden) reload();
-    });
-
-    return () => {
-      window.removeEventListener('storage', reload);
-      document.removeEventListener('visibilitychange', () => { if (!document.hidden) reload(); });
-    };
-  }, []);
+  const list = Array.isArray(skills) ? skills : [];
 
   return (
     <section id="skills" className="container page">
@@ -38,23 +10,27 @@ export default function Skills() {
       <p className="lead">Tools and areas I work in.</p>
 
       <div style={{ marginTop: 18 }}>
-        {skills.length === 0 ? (
+        {list.length === 0 ? (
           <div className="card">
-            <p className="muted">No skills added yet. Add skills via the <a className="link" href="/admin">admin</a> page.</p>
+            <p className="muted">No skills available.</p>
           </div>
         ) : (
-          <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', alignItems: 'center' }}>
-            {skills.map((s) => {
-              const isStr = typeof s === 'string';
-              const name = isStr ? s : s.name;
-              const img = isStr ? null : s.image;
-              return (
-                <div key={name} style={{ display: 'inline-flex', alignItems: 'center', gap: 8 }}>
-                  {img ? <img src={img} alt={name} style={{ width: 28, height: 28, objectFit: 'cover', borderRadius: 6, border: '1px solid rgba(255,255,255,0.02)' }} /> : null}
-                  <span className="tag" style={{ background: 'rgba(249,115,22,0.08)', color: 'var(--accent)' }}>{name}</span>
+          <div className="skills-grid">
+            {list.map((s) => (
+              <div key={s.name} className="skill-card" tabIndex={0} aria-label={s.name}>
+                <div className="skill-icon-wrapper">
+                  <div className={`skill-icon ${s.image ? 'has-img' : ''}`}>
+                    {s.image ? (
+                        <img className="skill-img" src={s.image} alt={s.name} onError={(e) => { e.target.onerror = null; e.target.style.display = 'none'; }} />
+                    ) : (
+                      <div className="skill-initials">{s.name.split(' ').map(w => w[0]).slice(0,2).join('').toUpperCase()}</div>
+                    )}
+                    <div className="led" />
+                  </div>
                 </div>
-              );
-            })}
+                <div className="skill-name">{s.name}</div>
+              </div>
+            ))}
           </div>
         )}
       </div>

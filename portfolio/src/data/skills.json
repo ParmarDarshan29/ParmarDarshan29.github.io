@@ -1,0 +1,51 @@
+[
+  { "name": "Python", "image": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg" },
+  { "name": "SQL", "image": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg" },
+  { "name": "C", "image": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/c/c-original.svg" },
+  { "name": "C++", "image": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/cplusplus/cplusplus-original.svg" },
+
+  { "name": "NumPy", "image": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/numpy/numpy-original.svg" },
+  { "name": "Pandas", "image": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/pandas/pandas-original.svg" },
+  { "name": "Scikit-learn", "image": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/scikitlearn/scikitlearn-original.svg" },
+  { "name": "XGBoost", "image": "https://raw.githubusercontent.com/ongxuan1997/assets/main/xgboost.svg" },
+  { "name": "LightGBM", "image": "https://cdn.simpleicons.org/lightgbm" },
+  { "name": "Matplotlib", "image": "https://cdn.simpleicons.org/matplotlib" },
+  { "name": "Seaborn", "image": "https://cdn.simpleicons.org/seaborn" },
+
+  { "name": "TensorFlow", "image": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tensorflow/tensorflow-original.svg" },
+  { "name": "Keras", "image": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/keras/keras-original.svg" },
+  { "name": "PyTorch", "image": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/pytorch/pytorch-original.svg" },
+  { "name": "Large Language Models (LLMs)", "image": "https://raw.githubusercontent.com/huggingface/brand-assets/main/huggingface_logo.svg" },
+
+  { "name": "MySQL", "image": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg" },
+  { "name": "MongoDB", "image": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg" },
+  { "name": "Retrieval-Augmented Generation (RAG)", "image": "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='128' height='128' viewBox='0 0 128 128'><rect fill='%23ffffff' rx='18' width='128' height='128'/><text x='50%' y='55%' font-family='Inter, Arial, sans-serif' font-size='28' fill='%23000' text-anchor='middle' dominant-baseline='middle'>RAG</text></svg>" },
+
+  { "name": "SHAP", "image": "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='128' height='128' viewBox='0 0 128 128'><rect fill='%23ffffff' rx='18' width='128' height='128'/><text x='50%' y='55%' font-family='Inter, Arial, sans-serif' font-size='22' fill='%23000' text-anchor='middle' dominant-baseline='middle'>SHAP</text></svg>" },
+  { "name": "LIME", "image": "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='128' height='128' viewBox='0 0 128 128'><rect fill='%23ffffff' rx='18' width='128' height='128'/><text x='50%' y='55%' font-family='Inter, Arial, sans-serif' font-size='22' fill='%23000' text-anchor='middle' dominant-baseline='middle'>LIME</text></svg>" },
+  { "name": "Grad-CAM", "image": "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='128' height='128' viewBox='0 0 128 128'><rect fill='%23ffffff' rx='18' width='128' height='128'/><text x='50%' y='55%' font-family='Inter, Arial, sans-serif' font-size='20' fill='%23000' text-anchor='middle' dominant-baseline='middle'>G-CAM</text></svg>" },
+
+  { "name": "Flask", "image": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/flask/flask-original.svg" },
+  { "name": "Django", "image": "https://cdn.simpleicons.org/django" },
+  { "name": "HTML", "image": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg" },
+  { "name": "CSS", "image": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg" },
+  { "name": "JavaScript", "image": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" },
+  { "name": "React.js (basic)", "image": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg" },
+
+  { "name": "MONAI", "image": "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='128' height='128' viewBox='0 0 128 128'><rect fill='%23ffffff' rx='18' width='128' height='128'/><text x='50%' y='55%' font-family='Inter, Arial, sans-serif' font-size='20' fill='%23000' text-anchor='middle' dominant-baseline='middle'>MONAI</text></svg>" },
+  { "name": "NiBabel", "image": "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='128' height='128' viewBox='0 0 128 128'><rect fill='%23ffffff' rx='18' width='128' height='128'/><text x='50%' y='55%' font-family='Inter, Arial, sans-serif' font-size='20' fill='%23000' text-anchor='middle' dominant-baseline='middle'>NiB</text></svg>" },
+  { "name": "NiLearn", "image": "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='128' height='128' viewBox='0 0 128 128'><rect fill='%23ffffff' rx='18' width='128' height='128'/><text x='50%' y='55%' font-family='Inter, Arial, sans-serif' font-size='18' fill='%23000' text-anchor='middle' dominant-baseline='middle'>NiLearn</text></svg>" },
+  { "name": "OpenCV", "image": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/opencv/opencv-original.svg" },
+  { "name": "MNE-Python", "image": "https://via.placeholder.com/64?text=MNE" },
+
+  { "name": "Git & GitHub", "image": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg" },
+  { "name": "Google Colab", "image": null },
+  { "name": "Jupyter Notebook", "image": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/jupyter/jupyter-original.svg" },
+  { "name": "VS Code", "image": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vscode/vscode-original.svg" },
+  { "name": "Linux", "image": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linux/linux-original.svg" },
+
+  { "name": "Data Structures & Algorithms", "image": null },
+  { "name": "Model Deployment & Evaluation", "image": null },
+  { "name": "Data Preprocessing", "image": null },
+  { "name": "Research Ethics", "image": null }
+]

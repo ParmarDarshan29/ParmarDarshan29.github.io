@@ -43,7 +43,7 @@ export default function Activities() {
       <div style={{ marginTop: 18 }}>
         {items.length === 0 ? (
           <div className="card">
-            <p className="muted">No activities yet. Add entries via the <a className="link" href="/admin">admin</a> page.</p>
+            <p className="muted">No activities yet.</p>
           </div>
         ) : (
           <div style={{ display: 'grid', gap: 16 }}>

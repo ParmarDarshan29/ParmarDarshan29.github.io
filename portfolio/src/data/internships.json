@@ -1,0 +1,12 @@
+[
+  {
+    "id": "ieee-sps-2025",
+    "company": "IEEE SPS Summer Mentorship Program",
+    "role": "Research Intern",
+    "period": "Summer 2025",
+    "image": "/images/ieee.jpeg",
+    "viewUrl": "https://drive.google.com/file/d/1BeXlw2MWEf-fezMPSM0Bwhu6pAOM657j/view?usp=sharing",
+    "photo": "/images/sps.jpg",
+    "desc": "Worked under Dr. Mita C. Paunwala on “Deep Learning-Based Brain Tumor Segmentation using Multi-Modal MRI Data.” Produced calibrated and post-processed segmentation outputs suitable for research and clinical visualization."
+  }
+]

@@ -9,7 +9,6 @@ import Research from './pages/Research';
 import Internships from './pages/Internships';
 import Projects from './pages/Projects';
 import Contact from './pages/Contact';
-import Admin from './pages/Admin';
 import Activities from './pages/Activities';
 import './index.css';
 
@@ -36,8 +35,7 @@ function MainWithFooter() {
           <Route path="/activities" element={<Activities />} />
           <Route path="/projects" element={<Projects />} />
           <Route path="/contact" element={<Contact />} />
-          {/* admin route is intentionally unlinked in the header */}
-          <Route path="/admin" element={<Admin />} />
+          {/* Admin route removed — site content is now driven by JSON/data files */}
         </Routes>
       </main>
       {/* render footer on all pages except Contact */}
