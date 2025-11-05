@@ -50,6 +50,28 @@ body {
   gap: 12px;
   align-items:center;
   flex-wrap:wrap;
+
+/* hamburger / mobile nav toggle */
+.nav-toggle {
+  display: none; /* shown on small screens via media query */
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 6px;
+}
+.nav-toggle:focus { outline: 2px solid rgba(0,0,0,0.12); }
+.nav-toggle .bar {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background: currentColor;
+  margin: 4px 0;
+  transition: transform 220ms ease, opacity 200ms ease;
+}
+.nav.open + .nav-toggle .bar:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+.nav.open + .nav-toggle .bar:nth-child(2) { opacity: 0; }
+.nav.open + .nav-toggle .bar:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
 }
 /* nav link base */
 .nav-link {
@@ -76,9 +98,9 @@ body {
 }
 
 /* page utilities */
-html { font-size: clamp(14px, 1.35vw, 16px); }
-.page { min-height: 80vh; padding: clamp(12px, 2vw, 32px); animation: fadeIn 0.9s ease; }
-.container { width: min(1100px, 94%); margin: 0 auto; }
+html { font-size: clamp(13px, 2.4vw, 18px); }
+.page { min-height: 80vh; padding: clamp(10px, 2.5vw, 36px); animation: fadeIn 0.9s ease; }
+.container { width: min(1200px, 94%); margin: 0 auto; }
 /* ensure main has bottom padding so fixed footer doesn't overlap content */
 main { padding-bottom: 92px; }
 
@@ -154,12 +176,19 @@ main { padding-bottom: 92px; }
 
 .poster-hero {
   width: 100%;
-  max-height: 60vh;
+  max-height: 85vh; /* increase so poster is much larger and readable */
   height: auto;
   object-fit: contain;
   display: block;
   border-radius: 8px;
   box-shadow: 0 10px 30px rgba(0,0,0,0.45);
+}
+
+/* make poster visually full-bleed inside the card (negate card padding) */
+.card > .poster-hero {
+  margin: -24px -24px 12px -24px; /* match research hero full-bleed style */
+  width: calc(100% + 48px);
+  border-radius: 0 0 10px 10px;
 }
 
 /* Slightly larger heading for the poster section */
@@ -230,7 +259,20 @@ main { padding-bottom: 92px; }
   .page-title { font-size: 1.6rem; }
   .lead { font-size: 0.98rem; }
   .project-card { padding: 10px; }
-  .poster-hero { max-height: 45vh; }
+  .poster-hero { max-height: 70vh; }
+}
+
+/* Mobile nav behavior and hamburger visibility */
+@media (max-width: 900px) {
+  .nav-toggle { display: inline-block; }
+  .nav { display: none; }
+  .nav.open { display: flex; flex-direction: column; gap: 0.75rem; background: var(--card-bg, #fff); padding: 10px; margin-top: 8px; border-radius: 8px; box-shadow: 0 6px 18px rgba(0,0,0,0.06); }
+  header .nav.open a { padding: 8px 12px; }
+}
+
+@media (max-width: 480px) {
+  .nav.open { padding: 8px; gap: 0.6rem; }
+  .page { padding: clamp(10px, 4vw, 20px); }
 }
 
 /* Skills grid and LED fill hover effect */
