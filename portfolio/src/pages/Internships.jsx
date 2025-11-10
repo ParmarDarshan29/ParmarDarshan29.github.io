@@ -15,6 +15,7 @@ function loadInternships() {
 
 export default function Internships() {
   const [items, setItems] = useState([]);
+  
 
   function toPreviewUrl(url) {
     if (!url) return '';
@@ -105,17 +106,26 @@ export default function Internships() {
                   <h3 style={{ margin: 0 }}>{it.company} <span className="muted">— {it.role}</span></h3>
                   <div className="muted">{it.period}</div>
                   <p style={{ marginTop: 8, marginBottom: 14, color: 'var(--muted)' }}>{it.desc}</p>
-                  {it.photo ? (
-                    <div style={{ display: 'flex', justifyContent: 'center', marginTop: 12, width: '100%' }}>
-                      <img src={it.photo} alt={`${it.company} poster`} style={{ display: 'block', width: '100%', maxWidth: 720, borderRadius: 8 }} />
-                    </div>
-                  ) : null}
+                  <div style={{ display: 'flex', gap: 8, alignItems: 'center', flexWrap: 'wrap' }}>
+                    {/* Completion Certificate opens in a new tab */}
+                    <a
+                      className="btn outline"
+                      href={it.photo || toPreviewUrl(it.viewUrl) || toPreviewUrl(it.image)}
+                      target="_blank"
+                      rel="noreferrer noopener"
+                      aria-label={`Open completion certificate for ${it.company}`}
+                    >
+                      Completion Certificate
+                    </a>
+                  </div>
+                  {/* poster removed from inline view; use the View button instead */}
                 </div>
               </div>
             ))}
           </div>
         )}
       </div>
+      
     </section>
   );
 }

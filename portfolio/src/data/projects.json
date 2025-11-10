@@ -12,7 +12,7 @@
     "title": "retort.ai — Browser Extension",
     "desc": "Built a lightweight Chrome/Edge extension that generates context-aware replies using OpenRouter and other LLM providers. Developed a modular React-based popup, background, and content scripts for text extraction and AI-powered response generation. Implemented tone control, message rewriting, and clipboard integration with secure API key management via chrome.storage.local.",
     "tags": ["Chrome Extension", "React", "LLM"],
-    "image": "/images/retort.jpg",
+  "image": "/images/photos/retort.jpg",
     "url": "https://github.com/ParmarDarshan29/retort-ai-extension"
   },
   {

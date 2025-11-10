@@ -11,11 +11,6 @@ export default function About() {
 
           <div style={{ textAlign: 'center' }}>
             <h3 style={{ margin: '8px 0 4px' }}>Darshan Parmar</h3>
-            <div style={{ color: 'var(--muted)', fontSize: 14 }}>AI & ML Researcher · Front-end Developer</div>
-          </div>
-
-          <div style={{ display: 'flex', gap: 10, marginTop: 8 }}>
-            <a className="btn primary" href="/resume.pdf" target="_blank" rel="noreferrer">Resume</a>
           </div>
         </aside>
 
@@ -54,8 +49,11 @@ export default function About() {
 
       <style>{`
         @media (max-width: 880px) {
-          #about .container > div { grid-template-columns: 1fr; }
+          /* the .container class is on the section itself; target the direct child grid div */
+          #about > div { grid-template-columns: 1fr !important; }
           #about .card { padding: 16px; }
+          /* make aside non-sticky on smaller screens */
+          #about .about-aside { position: static; top: auto; }
         }
       `}</style>
     </section>

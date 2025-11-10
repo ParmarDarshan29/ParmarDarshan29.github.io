@@ -59,8 +59,9 @@ body {
   cursor: pointer;
   padding: 8px;
   border-radius: 6px;
+  color: var(--muted);
 }
-.nav-toggle:focus { outline: 2px solid rgba(0,0,0,0.12); }
+.nav-toggle:focus { outline: 2px solid rgba(249,115,22,0.12); }
 .nav-toggle .bar {
   display: block;
   width: 22px;
@@ -69,9 +70,10 @@ body {
   margin: 4px 0;
   transition: transform 220ms ease, opacity 200ms ease;
 }
-.nav.open + .nav-toggle .bar:nth-child(1) { transform: translateY(6px) rotate(45deg); }
-.nav.open + .nav-toggle .bar:nth-child(2) { opacity: 0; }
-.nav.open + .nav-toggle .bar:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+/* when the toggle button has the .open class, animate the bars into an X */
+.nav-toggle.open .bar:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+.nav-toggle.open .bar:nth-child(2) { opacity: 0; }
+.nav-toggle.open .bar:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
 }
 /* nav link base */
 .nav-link {
@@ -206,6 +208,150 @@ main { padding-bottom: 92px; }
   to { opacity: 1; transform: translateY(0); }
 }
 
+/* subtle pop-in used for lists (projects, skills, research) */
+@keyframes popIn {
+  from { opacity: 0; transform: translateY(10px) scale(.995); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* micro interactions */
+.logo {
+  display: inline-block;
+  transition: transform 260ms cubic-bezier(.2,.9,.2,1);
+  position: relative;
+}
+.logo:hover { transform: translateY(-3px) scale(1.02); }
+.logo::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: -6px;
+  width: 0;
+  height: 3px;
+  background: linear-gradient(90deg, rgba(249,115,22,0.9), rgba(255,204,102,0.6));
+  border-radius: 3px;
+  transition: width 300ms ease;
+}
+.logo:hover::after { width: 58%; }
+
+/* nav link underline animation */
+.nav-link { position: relative; }
+.nav-link::after {
+  content: '';
+  position: absolute;
+  left: 10px;
+  right: 10px;
+  bottom: 6px;
+  height: 2px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 280ms cubic-bezier(.2,.9,.2,1), opacity 220ms ease;
+  opacity: 0.95;
+  border-radius: 2px;
+}
+.nav-link:hover::after, .nav-link.active::after { transform: scaleX(1); }
+
+/* buttons micro-lift */
+.btn { transition: transform 180ms cubic-bezier(.2,.9,.2,1), box-shadow 180ms ease; }
+.btn:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 10px 30px rgba(2,6,23,0.14); }
+
+/* project image subtle zoom on hover */
+.project-card .thumb-img { transition: transform 520ms cubic-bezier(.2,.9,.2,1); }
+.project-card:hover .thumb-img { transform: scale(1.04) translateY(-3px); }
+
+/* staggered reveal for lists using nth-child delays */
+.projects-grid .project-card,
+.skills-grid .skill-card,
+.research-grid .research-card {
+  opacity: 0;
+  transform: translateY(8px);
+  animation: popIn 520ms cubic-bezier(.2,.9,.2,1) forwards;
+}
+.projects-grid .project-card:nth-child(1){ animation-delay: 60ms; }
+.projects-grid .project-card:nth-child(2){ animation-delay: 120ms; }
+.projects-grid .project-card:nth-child(3){ animation-delay: 180ms; }
+.projects-grid .project-card:nth-child(4){ animation-delay: 240ms; }
+.projects-grid .project-card:nth-child(5){ animation-delay: 300ms; }
+.projects-grid .project-card:nth-child(6){ animation-delay: 360ms; }
+.projects-grid .project-card:nth-child(7){ animation-delay: 420ms; }
+.projects-grid .project-card:nth-child(8){ animation-delay: 480ms; }
+
+.skills-grid .skill-card:nth-child(1){ animation-delay: 40ms; }
+.skills-grid .skill-card:nth-child(2){ animation-delay: 80ms; }
+.skills-grid .skill-card:nth-child(3){ animation-delay: 120ms; }
+.skills-grid .skill-card:nth-child(4){ animation-delay: 160ms; }
+.skills-grid .skill-card:nth-child(5){ animation-delay: 200ms; }
+.skills-grid .skill-card:nth-child(6){ animation-delay: 240ms; }
+.skills-grid .skill-card:nth-child(7){ animation-delay: 280ms; }
+.skills-grid .skill-card:nth-child(8){ animation-delay: 320ms; }
+
+.research-grid .research-card:nth-child(1){ animation-delay: 60ms; }
+.research-grid .research-card:nth-child(2){ animation-delay: 120ms; }
+.research-grid .research-card:nth-child(3){ animation-delay: 180ms; }
+
+/* little floating idle animation for skill icons (cute) */
+.skill-card .skill-icon { transition: transform 420ms cubic-bezier(.2,.9,.2,1); }
+.skill-card:hover .skill-icon { transform: translateY(-4px) rotate(-1deg) scale(1.03); }
+
+/* respect user's reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  .projects-grid .project-card,
+  .skills-grid .skill-card,
+  .research-grid .research-card,
+  .logo,
+  .nav-link::after,
+  .btn,
+  .project-card .thumb-img {
+    transition: none !important;
+    animation: none !important;
+    transform: none !important;
+  }
+}
+
+/* Lightbox styles */
+.lightbox-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(2,6,23,0.72);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1200;
+  padding: 24px;
+}
+.lightbox-content {
+  position: relative;
+  max-width: 1100px;
+  width: 100%;
+  border-radius: 10px;
+  box-shadow: 0 24px 60px rgba(0,0,0,0.6);
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  padding: 12px;
+}
+.lightbox-img { display: block; width: 100%; height: auto; border-radius: 6px; }
+.lightbox-close {
+  position: absolute;
+  right: 10px;
+  top: 8px;
+  background: rgba(0,0,0,0.45);
+  color: #fff;
+  border: 0;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+}
+.lightbox-close:focus { outline: 2px solid rgba(249,115,22,0.14); }
+
+@media (max-width: 720px) {
+  .lightbox-content { max-width: 92%; padding: 8px; }
+  .lightbox-close { width: 32px; height: 32px; font-size: 18px; }
+}
+
 /* Home hero animated background */
 .home-hero {
   position: relative;
@@ -266,7 +412,8 @@ main { padding-bottom: 92px; }
 @media (max-width: 900px) {
   .nav-toggle { display: inline-block; }
   .nav { display: none; }
-  .nav.open { display: flex; flex-direction: column; gap: 0.75rem; background: var(--card-bg, #fff); padding: 10px; margin-top: 8px; border-radius: 8px; box-shadow: 0 6px 18px rgba(0,0,0,0.06); }
+  /* use panel background on small screens to avoid white flash on dark theme */
+  .nav.open { display: flex; flex-direction: column; gap: 0.75rem; background: var(--panel); padding: 10px; margin-top: 8px; border-radius: 8px; box-shadow: 0 6px 18px rgba(0,0,0,0.16); }
   header .nav.open a { padding: 8px 12px; }
 }
 

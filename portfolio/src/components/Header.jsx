@@ -14,15 +14,18 @@ export default function Header() {
 
         {/* mobile nav toggle */}
         <button
-          className="nav-toggle"
+          className={`nav-toggle ${open ? 'open' : ''}`}
           aria-label={open ? 'Close menu' : 'Open menu'}
           aria-expanded={open}
+          aria-controls="main-nav"
           onClick={() => setOpen(v => !v)}
         >
-          <span className="hamburger" aria-hidden="true" />
+          <span className="bar" aria-hidden="true" />
+          <span className="bar" aria-hidden="true" />
+          <span className="bar" aria-hidden="true" />
         </button>
 
-        <nav className={`nav ${open ? 'open' : ''}`} role="navigation" aria-label="Main navigation">
+  <nav id="main-nav" className={`nav ${open ? 'open' : ''}`} role="navigation" aria-label="Main navigation">
           <NavLink to="/" className={active} end onClick={handleLinkClick}>Home</NavLink>
           <NavLink to="/about" className={active} onClick={handleLinkClick}>About</NavLink>
           <NavLink to="/skills" className={active} onClick={handleLinkClick}>Skills</NavLink>
